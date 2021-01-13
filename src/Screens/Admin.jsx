@@ -140,8 +140,9 @@ class Admin extends Component {
                                   className="bg-blue-100 border text-center px-8 py-4"
                                   colSpan="3"
                                 >
-                                  {n.user.pref_first_name} {n.user.last_name} (
-                                  {n.role}) - Nominations
+                                  {n.user.pref_first_name} {n.user.last_name} -{" "}
+                                  {n.user.student_number} ({n.role}) -
+                                  Nominations
                                 </th>
                               </tr>
                               <tr>
