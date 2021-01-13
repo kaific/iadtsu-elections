@@ -156,7 +156,8 @@ class Nominations extends Component {
                   </div>
                 </div>
                 <div className="mx-auto max-w-xs relative ">
-                  {!isEmpty(nominees)
+                  Nominations are now closed. Thanks for your participation!
+                  {/* {!isEmpty(nominees)
                     ? nominees.map((n, i) => {
                         if (
                           n.user.student_number == this.state.student_number
@@ -223,10 +224,10 @@ class Nominations extends Component {
                           );
                         }
                       })
-                    : "No nominees yet."}
+                    : "No nominees yet."} */}
                 </div>
                 {/* If not a nominee */}
-                {!nominated ? (
+                {/* {!nominated ? (
                   <React.Fragment>
                     <div className="my-12 border-b text-center">
                       <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
@@ -243,14 +244,14 @@ class Nominations extends Component {
                       </Link>
                     </div>
                   </React.Fragment>
-                ) : null}
+                ) : null} */}
 
                 {/* If a nominee */}
                 {nominated ? (
                   <React.Fragment>
                     <div className="mt-12 mb-4 border-b text-center">
                       <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                        {!nominated ? "Nominate yourself" : "Your signatures"}
+                        Your signatures
                       </div>
                     </div>
                     <div className="mx-auto max-w-xs relative text-center">
