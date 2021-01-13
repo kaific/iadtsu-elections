@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import authSvg from "../assets/login.svg";
-import { ToastContainer, toast } from "react-toastify";
-import { authenticate, isAuth } from "../helpers/auth";
 import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+
+import authSvg from "../../assets/login.svg";
+import { authenticate, isAuth } from "../../helpers/auth";
 
 const Login = ({ history }) => {
   const [formData, setFormData] = useState({

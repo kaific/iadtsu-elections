@@ -1,9 +1,10 @@
 import React, { Component } from "react";
+import { Link, Redirect } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
-import { getCookie } from "../helpers/auth";
-import { Link, Redirect } from "react-router-dom";
-import { isEmpty } from "../helpers/basic";
+
+import { getCookie } from "../../helpers/auth";
+import { isEmpty } from "../../helpers/basic";
 
 class Nominate extends Component {
   constructor(props) {

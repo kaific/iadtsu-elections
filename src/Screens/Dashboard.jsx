@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import authSvg from "../assets/update.svg";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+
+import authSvg from "../assets/update.svg";
 import { updateUser, isAuth, getCookie, signout } from "../helpers/auth";
 
 const Dashboard = ({ history }) => {

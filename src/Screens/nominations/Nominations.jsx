@@ -2,8 +2,9 @@ import React, { Component } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { isAuth, getCookie, signout } from "../helpers/auth";
-import { isEmpty } from "../helpers/basic";
+
+import { isAuth, getCookie, signout } from "../../helpers/auth";
+import { isEmpty } from "../../helpers/basic";
 
 // const Nominations = ({ history }) => {
 class Nominations extends Component {

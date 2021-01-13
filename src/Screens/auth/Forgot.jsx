@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import authSvg from "../assets/forget.svg";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
+
+import authSvg from "../../assets/forget.svg";
 
 const Forgot = () => {
   const [formData, setFormData] = useState({

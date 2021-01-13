@@ -1,22 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
+
 import App from "./App";
-import Register from "./Screens/Register";
-import Login from "./Screens/Login";
-import Forgot from "./Screens/Forgot";
-import Activate from "./Screens/Activate";
-import Reset from "./Screens/Reset";
+
+import Register from "./Screens/auth/Register";
+import Login from "./Screens/auth/Login";
+import Forgot from "./Screens/auth/Forgot";
+import Activate from "./Screens/auth/Activate";
+import Reset from "./Screens/auth/Reset";
+
 import Dashboard from "./Screens/Dashboard";
 import Admin from "./Screens/Admin";
-import Nominations from "./Screens/Nominations";
-import Nominate from "./Screens/Nominate";
-import EnterNomination from "./Screens/EnterNomination";
+
+import Nominations from "./Screens/nominations/Nominations";
+import Nominate from "./Screens/nominations/Nominate";
+import EnterNomination from "./Screens/nominations/EnterNomination";
 
 import PrivateRoute from "./Routes/PrivateRoute";
 import AdminRoute from "./Routes/AdminRoute";
-
-import "react-toastify/dist/ReactToastify.css";
 
 ReactDOM.render(
   <BrowserRouter>

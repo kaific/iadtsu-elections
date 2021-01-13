@@ -1,8 +1,9 @@
 import React, { useState, useEffect, Component } from "react";
-import authSvg from "../assets/update.svg";
 import { ToastContainer, toast } from "react-toastify";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
+
+import authSvg from "../assets/update.svg";
 import { updateUser, isAuth, getCookie, signout } from "../helpers/auth";
 import { isEmpty } from "../helpers/basic";
 

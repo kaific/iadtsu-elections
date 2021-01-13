@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import authSvg from "../assets/auth.svg";
-import { ToastContainer, toast } from "react-toastify";
-import { /*authenticate, isAuth,*/ getCookie } from "../helpers/auth";
 import axios from "axios";
 import { Link, Redirect } from "react-router-dom";
-import { isEmpty } from "../helpers/basic";
+import { ToastContainer, toast } from "react-toastify";
+
+import authSvg from "../../assets/auth.svg";
+import { /*authenticate, isAuth,*/ getCookie } from "../../helpers/auth";
+import { isEmpty } from "../../helpers/basic";
 
 class EnterNomination extends Component {
   constructor(props) {
