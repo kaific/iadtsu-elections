@@ -18,6 +18,8 @@ import Nominations from "./Screens/nominations/Nominations";
 import Nominate from "./Screens/nominations/Nominate";
 import EnterNomination from "./Screens/nominations/EnterNomination";
 
+import Elections from "./Screens/elections/Elections";
+
 import PrivateRoute from "./Routes/PrivateRoute";
 import AdminRoute from "./Routes/AdminRoute";
 
@@ -59,6 +61,7 @@ ReactDOM.render(
         exact
         component={EnterNomination}
       /> */}
+      <PrivateRoute path="/elections" exact component={Elections} />
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")
