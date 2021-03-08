@@ -126,6 +126,9 @@ class Nominations extends Component {
       loaded,
     } = this.state;
 
+    console.log("nominees: ", nominees);
+    console.log("nominations: ", nominations);
+
     if (!loaded) {
       return "Loading...";
     }
@@ -205,25 +208,25 @@ class Nominations extends Component {
                                   </span>
                                 </a>
                               );
+                            } else {
+                              return (
+                                <Link
+                                  to={{
+                                    pathname: `/nominations/nominate/${n._id}`,
+                                    state: { nominee: n },
+                                  }}
+                                  key={i}
+                                  className="mt-5 tracking-wide font-semibold bg-gray-600 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                                >
+                                  <i className="fas fa-user  w-6  -ml-2" />
+                                  <span className="ml-1">
+                                    {n.user.pref_first_name} {n.user.last_name}{" "}
+                                    for {n.role}
+                                  </span>
+                                </Link>
+                              );
                             }
                           });
-                        } else {
-                          return (
-                            <Link
-                              to={{
-                                pathname: `/nominations/nominate/${n._id}`,
-                                state: { nominee: n },
-                              }}
-                              key={i}
-                              className="mt-5 tracking-wide font-semibold bg-gray-600 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                            >
-                              <i className="fas fa-user  w-6  -ml-2" />
-                              <span className="ml-1">
-                                {n.user.pref_first_name} {n.user.last_name} for{" "}
-                                {n.role}
-                              </span>
-                            </Link>
-                          );
                         }
                       })
                     : "No nominees yet."}

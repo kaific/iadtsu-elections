@@ -190,7 +190,7 @@ class Admin extends Component {
                   If you encounter any issues with the system, please email{" "}
                   <strong>welfareiadt@gmail.com</strong>.
                 </div>
-                <div className="my-12 border-b text-center">
+                {/* <div className="my-12 border-b text-center">
                   <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
                     Election Results
                   </div>
@@ -239,7 +239,7 @@ class Admin extends Component {
                     
                     HARDCODED - REMOVE !!!!!! 
                     
-                    */}
+                    
                       {roles.map((r, i) => {
                         let count = 0;
                         return (
@@ -327,8 +327,8 @@ class Admin extends Component {
                       })}
                     </tbody>
                   </table>
-                </div>
-                {/* <div className="my-12 border-b text-center">
+                </div> */}
+                <div className="my-12 border-b text-center">
                   <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
                     Nominations
                   </div>
@@ -396,7 +396,7 @@ class Admin extends Component {
                         );
                       })
                     : "There are no nominees."}
-                </div> */}
+                </div>
                 <div className="my-12 border-b text-center">
                   <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
                     Select destination
