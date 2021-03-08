@@ -36,7 +36,9 @@ class Nominations extends Component {
 
   loadNominees = async () => {
     await axios
-      .get(`${process.env.REACT_APP_API_URL}/nomination/nominees`)
+      .post(`${process.env.REACT_APP_API_URL}/nomination/nominees`, {
+        year: 2021,
+      })
       .then((res) => {
         this.setState({ nominees: res.data, loaded: true });
       })
@@ -156,8 +158,8 @@ class Nominations extends Component {
                   </div>
                 </div>
                 <div className="mx-auto max-w-xs relative ">
-                  Nominations are now closed. Thanks for your participation!
-                  {/* {!isEmpty(nominees)
+                  {/* Nominations are now closed. Thanks for your participation! */}
+                  {!isEmpty(nominees)
                     ? nominees.map((n, i) => {
                         if (
                           n.user.student_number == this.state.student_number
@@ -194,7 +196,7 @@ class Nominations extends Component {
                                     )
                                   }
                                 >
-                                  <i className="fas fa-user  w-6  -ml-2" />
+                                  <i className="fas fa-user w-6 -ml-2" />
                                   <span className="ml-1">
                                     <strike>
                                       {n.user.pref_first_name}{" "}
@@ -224,10 +226,10 @@ class Nominations extends Component {
                           );
                         }
                       })
-                    : "No nominees yet."} */}
+                    : "No nominees yet."}
                 </div>
                 {/* If not a nominee */}
-                {/* {!nominated ? (
+                {!nominated ? (
                   <React.Fragment>
                     <div className="my-12 border-b text-center">
                       <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
@@ -244,7 +246,7 @@ class Nominations extends Component {
                       </Link>
                     </div>
                   </React.Fragment>
-                ) : null} */}
+                ) : null}
 
                 {/* If a nominee */}
                 {nominated ? (

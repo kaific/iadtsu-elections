@@ -51,7 +51,7 @@ ReactDOM.render(
       <PrivateRoute path="/dashboard" exact component={Dashboard} />
       <AdminRoute path="/admin" exact component={Admin} />
       <PrivateRoute path="/nominations" exact component={Nominations} />
-      {/* <PrivateRoute
+      <PrivateRoute
         path="/nominations/nominate/:id"
         exact
         component={Nominate}
@@ -60,8 +60,8 @@ ReactDOM.render(
         path="/nominations/enter"
         exact
         component={EnterNomination}
-      /> */}
-      <PrivateRoute path="/elections" exact component={Elections} />
+      />
+      {/* <PrivateRoute path="/elections" exact component={Elections} /> */}
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")

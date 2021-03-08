@@ -12,12 +12,18 @@ class EnterNomination extends Component {
     super(props);
     this.state = {
       roles: {
+        president: "President",
+        welfare: "VP for Welfare & Equality",
+        education: "VP for Education",
+        lgbtq: "LGBTQ+",
+        ents: "Entertainments",
+        gaeilge: "Oifigeach na Gaeilge",
         disability: "Disability",
         mature: "Mature Student",
         socs: "Clubs & Societies",
       },
       nominees: {},
-      role: "disability",
+      role: "president",
       token: "",
       nominee: false,
     };

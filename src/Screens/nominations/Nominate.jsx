@@ -46,7 +46,7 @@ class Nominate extends Component {
     let nominated = false;
 
     await axios
-      .post(`${process.env.REACT_APP_API_URL}/nomination/mine`, {
+      .post(`${process.env.REACT_APP_API_URL}/nomination/signees/mine`, {
         token,
       })
       .then((res) => {
