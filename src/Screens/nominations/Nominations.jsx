@@ -5,6 +5,7 @@ import axios from "axios";
 
 import { isAuth, getCookie, signout } from "../../helpers/auth";
 import { isEmpty } from "../../helpers/basic";
+import { sign } from "jsonwebtoken";
 
 // const Nominations = ({ history }) => {
 class Nominations extends Component {
@@ -141,6 +142,10 @@ class Nominations extends Component {
     });
     console.log("nominated: " + nominated);
 
+    let signed = nominations.map((sign) => {
+      return sign.nominee._id;
+    });
+
     return (
       <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
         <ToastContainer />
@@ -186,7 +191,7 @@ class Nominations extends Component {
                               </span>
                             </a>
                           );
-                        } else if (!isEmpty(nominations)) {
+                        } else if (signed.includes(n._id)) {
                           return nominations.map((nomination) => {
                             if (n._id == nomination.nominee._id) {
                               return (
@@ -208,25 +213,25 @@ class Nominations extends Component {
                                   </span>
                                 </a>
                               );
-                            } else {
-                              return (
-                                <Link
-                                  to={{
-                                    pathname: `/nominations/nominate/${n._id}`,
-                                    state: { nominee: n },
-                                  }}
-                                  key={i}
-                                  className="mt-5 tracking-wide font-semibold bg-gray-600 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                                >
-                                  <i className="fas fa-user  w-6  -ml-2" />
-                                  <span className="ml-1">
-                                    {n.user.pref_first_name} {n.user.last_name}{" "}
-                                    for {n.role}
-                                  </span>
-                                </Link>
-                              );
                             }
                           });
+                        } else {
+                          return (
+                            <Link
+                              to={{
+                                pathname: `/nominations/nominate/${n._id}`,
+                                state: { nominee: n },
+                              }}
+                              key={i}
+                              className="mt-5 tracking-wide font-semibold bg-gray-600 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                            >
+                              <i className="fas fa-user  w-6  -ml-2" />
+                              <span className="ml-1">
+                                {n.user.pref_first_name} {n.user.last_name} for{" "}
+                                {n.role}
+                              </span>
+                            </Link>
+                          );
                         }
                       })
                     : "No nominees yet."}
