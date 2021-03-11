@@ -109,4 +109,4 @@ class AdminUsers extends Component {
   }
 }
 
-export default AdminUser;
+export default AdminUsers;
