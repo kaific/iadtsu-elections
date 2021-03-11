@@ -12,13 +12,13 @@ import Activate from "./Screens/auth/Activate";
 import Reset from "./Screens/auth/Reset";
 
 import Dashboard from "./Screens/Dashboard";
-import Admin from "./Screens/Admin";
-
 import Nominations from "./Screens/nominations/Nominations";
 import Nominate from "./Screens/nominations/Nominate";
 import EnterNomination from "./Screens/nominations/EnterNomination";
-
 import Elections from "./Screens/elections/Elections";
+
+import AdminDashboard from "./Screens/admin/AdminDashboard";
+import AdminNominations from "./Screens/admin/AdminNominations";
 
 import PrivateRoute from "./Routes/PrivateRoute";
 import AdminRoute from "./Routes/AdminRoute";
@@ -49,7 +49,12 @@ ReactDOM.render(
         render={(props) => <Reset {...props} />}
       />
       <PrivateRoute path="/dashboard" exact component={Dashboard} />
-      <AdminRoute path="/admin" exact component={Admin} />
+      <AdminRoute path="/admin" exact component={AdminDashboard} />
+      <AdminRoute
+        path="/admin/nominations"
+        exact
+        component={AdminNominations}
+      />
       <PrivateRoute path="/nominations" exact component={Nominations} />
       <PrivateRoute
         path="/nominations/nominate/:id"
