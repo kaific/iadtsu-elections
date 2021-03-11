@@ -6,11 +6,11 @@ import authSvg from "../../assets/forget.svg";
 
 const Forgot = () => {
   const [formData, setFormData] = useState({
-    email: "",
+    student_number: "",
     textChange: "Submit",
   });
 
-  const { email, textChange } = formData;
+  const { student_number, textChange } = formData;
 
   // Handle change from inputs
   const handleChange = (text) => (e) => {
@@ -20,16 +20,16 @@ const Forgot = () => {
   // Submit data to backend
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (email) {
+    if (student_number) {
       setFormData({ ...formData, textChange: "Submitting" });
       axios
         .post(`${process.env.REACT_APP_API_URL}/password/forgot`, {
-          email,
+          student_number,
         })
         .then((res) => {
           setFormData({
             ...formData,
-            email: "",
+            student_number: "",
           });
 
           toast.success("Please check your email");
@@ -38,7 +38,7 @@ const Forgot = () => {
           toast.error(err.response.data.error);
         });
     } else {
-      toast.error("Please enter a valid email.");
+      toast.error("Please enter a valid student number.");
     }
   };
 
@@ -58,10 +58,10 @@ const Forgot = () => {
               <div className="mx-auto max-w-xs relative">
                 <input
                   className="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5"
-                  type="email"
-                  placeholder="Email"
-                  onChange={handleChange("email")}
-                  value={email}
+                  type="text"
+                  placeholder="Student Number"
+                  onChange={handleChange("student_number")}
+                  value={student_number}
                 />
                 <button
                   type="submit"

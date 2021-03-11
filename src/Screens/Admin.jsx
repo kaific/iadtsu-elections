@@ -122,6 +122,7 @@ class Admin extends Component {
   };
 
   loadBallots = async () => {
+    console.log(this.state.election._id);
     await axios
       .get(
         `${process.env.REACT_APP_API_URL}/election/${this.state.election._id}/ballots`
@@ -130,6 +131,7 @@ class Admin extends Component {
         this.setState({ ballots: res.data, loaded: true });
       })
       .catch((err) => {
+        console.log("errorrrr", err);
         toast.error(err.response.data.message);
         this.setState({ loaded: true });
       });
@@ -360,7 +362,8 @@ class Admin extends Component {
                               </tr>
                               {!isEmpty(
                                 nominations.filter(
-                                  (nom) => nom.nominee._id == n._id
+                                  (nom) =>
+                                    nom.nominee && nom.nominee._id == n._id
                                 )
                               ) ? (
                                 nominations

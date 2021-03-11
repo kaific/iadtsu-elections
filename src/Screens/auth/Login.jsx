@@ -88,7 +88,7 @@ const Login = ({ history }) => {
                   Login
                 </button>
                 <Link
-                  to="/users/password/forget"
+                  to="/users/password/forgot"
                   className="no-underline hover:underline text-indigo-500 text-md text-right absolute right-0 mt-2"
                 >
                   Forgot password?
