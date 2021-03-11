@@ -23,6 +23,13 @@ const AdminNavigation = ({ component: Component, ...rest }) => (
         <i className="fas fa-sign-in-alt  w-6  -ml-2" />
         <span className="ml-3">Manage Nominations</span>
       </Link>
+      <Link
+        to="/admin/elections"
+        className="mt-5 tracking-wide font-semibold bg-purple-600 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+      >
+        <i className="fas fa-sign-in-alt  w-6  -ml-2" />
+        <span className="ml-3">Manage Elections</span>
+      </Link>
     </div>
   </>
 );
