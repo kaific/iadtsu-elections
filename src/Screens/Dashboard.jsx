@@ -3,7 +3,9 @@ import { ToastContainer, toast } from "react-toastify";
 import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 
-import authSvg from "../assets/update.svg";
+import NoticeMessage from "../Components/NoticeMessage";
+import Navigation from "../Components/Navigation";
+
 import { updateUser, isAuth, getCookie, signout } from "../helpers/auth";
 
 const Dashboard = ({ history }) => {
@@ -73,10 +75,7 @@ const Dashboard = ({ history }) => {
               {"<"} Home
             </Link>
             <div className="w-full flex-1 mt-8 text-gray-700">
-              <div className="mx-auto max-w-xs relative text-center text-blue-700">
-                If you encounter any issues with the system, please email{" "}
-                <strong>welfareiadt@gmail.com</strong>.
-              </div>
+              <NoticeMessage />
               <div className="my-6 border-b text-center">
                 <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
                   Your information
@@ -88,48 +87,7 @@ const Dashboard = ({ history }) => {
                 Name: {pref_first_name} {last_name}
                 <br />
               </div>
-              <div className="my-6 border-b text-center">
-                <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                  Select destination
-                </div>
-              </div>
-              <div className="mx-auto max-w-xs relative ">
-                {role == "admin" ? (
-                  <Link
-                    to="/admin"
-                    className="mt-5 tracking-wide font-semibold bg-green-500 text-gray-100 w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                  >
-                    <i className="fas fa-sign-in-alt  w-6  -ml-2" />
-                    <span className="ml-3">Admin Dashboard</span>
-                  </Link>
-                ) : null}
-                <Link
-                  to="/nominations"
-                  className="mt-5 tracking-wide font-semibold bg-orange-500 text-gray-100 w-full py-4 rounded-lg hover:bg-orange-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                >
-                  <i className="fas fa-sign-in-alt  w-6  -ml-2" />
-                  <span className="ml-3">Nominations</span>
-                </Link>
-                {/* <Link
-                  to="/elections"
-                  className="mt-5 tracking-wide font-semibold bg-purple-600 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                >
-                  <i className="fas fa-sign-in-alt  w-6  -ml-2" />
-                  <span className="ml-3">Elections</span>
-                </Link> */}
-                <button
-                  onClick={() => {
-                    signout(() => {
-                      toast.success("Signed out successfully");
-                      history.push("/");
-                    });
-                  }}
-                  className="mt-5 tracking-wide font-semibold bg-pink-500 text-gray-100 w-full py-4 rounded-lg hover:bg-pink-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                >
-                  <i className="fas fa-sign-out-alt  w-6  -ml-2" />
-                  <span className="ml-3">Sign Out</span>
-                </button>
-              </div>
+              <Navigation role={role} />
             </div>
           </div>
         </div>

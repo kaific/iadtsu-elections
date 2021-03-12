@@ -3,6 +3,9 @@ import { ToastContainer, toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+import NoticeMessage from "../../Components/NoticeMessage";
+import Navigation from "../../Components/Navigation";
+
 import { isAuth, getCookie, signout } from "../../helpers/auth";
 import { isEmpty } from "../../helpers/basic";
 import { sign } from "jsonwebtoken";
@@ -159,10 +162,7 @@ class Nominations extends Component {
                 {"<"} Home
               </Link>
               <div className="w-full flex-1 mt-8 text-indigo-500">
-                <div className="mx-auto max-w-xs relative text-center text-blue-700">
-                  If you encounter any issues with the system, please email{" "}
-                  <strong>welfareiadt@gmail.com</strong>.
-                </div>
+                <NoticeMessage />
                 <div className="my-12 border-b text-center">
                   <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
                     Choose nominee to sign nomination
@@ -246,7 +246,7 @@ class Nominations extends Component {
                   <React.Fragment>
                     <div className="my-12 border-b text-center">
                       <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                        Nominate yourself
+                        Enter Nominations
                       </div>
                     </div>
                     <div className="mx-auto max-w-xs relative text-center">
@@ -255,7 +255,7 @@ class Nominations extends Component {
                         className="mt-5 tracking-wide font-semibold bg-purple-600 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                       >
                         <i className="fas fa-sign-in-alt  w-6  -ml-2" />
-                        <span className="ml-3">Enter Nominations</span>
+                        <span className="ml-3">Nominate Yourself</span>
                       </Link>
                     </div>
                   </React.Fragment>
@@ -287,41 +287,7 @@ class Nominations extends Component {
                     </div>
                   </React.Fragment>
                 ) : null}
-                <div className="my-12 border-b text-center">
-                  <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                    Select destination
-                  </div>
-                </div>
-                <div className="mx-auto max-w-xs relative ">
-                  {role === "admin" ? (
-                    <Link
-                      to="/admin"
-                      className="mt-5 tracking-wide font-semibold bg-green-500 text-gray-100 w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                    >
-                      <i className="fas fa-sign-in-alt  w-6  -ml-2" />
-                      <span className="ml-3">Admin Dashboard</span>
-                    </Link>
-                  ) : null}
-                  <Link
-                    to="/dashboard"
-                    className="mt-5 tracking-wide font-semibold bg-blue-500 text-gray-100 w-full py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                  >
-                    <i className="fas fa-sign-in-alt  w-6  -ml-2" />
-                    <span className="ml-3">Dashboard</span>
-                  </Link>
-                  <button
-                    onClick={() => {
-                      signout(() => {
-                        toast.success("Signed out successfully");
-                        this.props.history.push("/");
-                      });
-                    }}
-                    className="mt-5 tracking-wide font-semibold bg-pink-500 text-gray-100 w-full py-4 rounded-lg hover:bg-pink-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                  >
-                    <i className="fas fa-sign-out-alt  w-6  -ml-2" />
-                    <span className="ml-3">Sign Out</span>
-                  </button>
-                </div>
+                <Navigation role={role} />
               </div>
             </div>
           </div>
