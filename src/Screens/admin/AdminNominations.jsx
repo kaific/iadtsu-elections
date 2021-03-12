@@ -4,6 +4,8 @@ import { Link, Redirect } from "react-router-dom";
 import axios from "axios";
 
 import AdminNavigation from "../../Components/AdminNavigation";
+import Navigation from "../../Components/Navigation";
+import NoticeMessage from "../../Components/NoticeMessage";
 
 import { updateUser, isAuth, getCookie, signout } from "../../helpers/auth";
 import { isEmpty } from "../../helpers/basic";
@@ -118,11 +120,7 @@ class AdminNominations extends Component {
                 {"<"} Admin Dashboard
               </Link>
               <div className="w-full flex-1 mt-8 text-indigo-500">
-                <div className="mx-auto max-w-xs relative text-center text-blue-700">
-                  If you encounter any issues with the system, please email{" "}
-                  <strong>welfareiadt@gmail.com</strong>.
-                </div>
-
+                <NoticeMessage />
                 <AdminNavigation />
 
                 <div className="my-12 border-b text-center">
@@ -198,39 +196,7 @@ class AdminNominations extends Component {
                       })
                     : "There are no nominees."}
                 </div>
-                <div className="my-12 border-b text-center">
-                  <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                    Select destination
-                  </div>
-                </div>
-                <div className="mx-auto max-w-xs relative ">
-                  <Link
-                    to="/dashboard"
-                    className="mt-5 tracking-wide font-semibold bg-blue-500 text-gray-100 w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                  >
-                    <i className="fas fa-sign-in-alt  w-6  -ml-2" />
-                    <span className="ml-3">Dashboard</span>
-                  </Link>
-                  <Link
-                    to="/nominations"
-                    className="mt-5 tracking-wide font-semibold bg-orange-500 text-gray-100 w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                  >
-                    <i className="fas fa-sign-in-alt  w-6  -ml-2" />
-                    <span className="ml-3">Nominations</span>
-                  </Link>
-                  <button
-                    onClick={() => {
-                      signout(() => {
-                        toast.success("Signed out successfully");
-                        this.props.history.push("/");
-                      });
-                    }}
-                    className="mt-5 tracking-wide font-semibold bg-pink-500 text-gray-100 w-full py-4 rounded-lg hover:bg-pink-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                  >
-                    <i className="fas fa-sign-out-alt  w-6  -ml-2" />
-                    <span className="ml-3">Sign Out</span>
-                  </button>
-                </div>
+                <Navigation role={role} />
               </div>
             </div>
           </div>

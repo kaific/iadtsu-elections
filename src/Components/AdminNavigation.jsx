@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const AdminNavigation = ({ component: Component, ...rest }) => (
+const AdminNavigation = (props) => (
   <>
     <div className="my-12 border-b text-center">
       <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
@@ -15,6 +15,13 @@ const AdminNavigation = ({ component: Component, ...rest }) => (
       >
         <i className="fas fa-sign-in-alt  w-6  -ml-2" />
         <span className="ml-3">Admin Dashboard</span>
+      </Link>
+      <Link
+        to="/admin/users"
+        className="mt-5 tracking-wide font-semibold bg-pink-600 text-gray-100 w-full py-4 rounded-lg hover:bg-pink-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+      >
+        <i className="fas fa-sign-in-alt  w-6  -ml-2" />
+        <span className="ml-3">Manage Users</span>
       </Link>
       <Link
         to="/admin/nominations"
