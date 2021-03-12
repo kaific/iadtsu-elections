@@ -46,7 +46,7 @@ const Navigation = (props) => (
         onClick={() => {
           signout(() => {
             toast.success("Signed out successfully");
-            this.props.history.push("/");
+            props.history.push("/");
           });
         }}
         className="mt-5 tracking-wide font-semibold bg-pink-500 text-gray-100 w-full py-4 rounded-lg hover:bg-pink-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"

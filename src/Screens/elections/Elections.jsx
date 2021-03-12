@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 
 import Navigation from "../../Components/Navigation";
+import NoticeMessage from "../../Components/NoticeMessage";
 
 import { isAuth, getCookie, signout } from "../../helpers/auth";
 import { isEmpty } from "../../helpers/basic";
@@ -205,6 +206,8 @@ class Elections extends Component {
       loaded,
     } = this.state;
 
+    const { history } = this.props;
+
     if (!loaded) {
       return "Loading...";
     }
@@ -225,10 +228,7 @@ class Elections extends Component {
                 {"<"} Home
               </Link>
               <div className="w-full flex-1 mt-8 text-indigo-500">
-                <div className="mx-auto max-w-xs relative text-center text-blue-700">
-                  If you encounter any issues with the system, please email{" "}
-                  <strong>welfareiadt@gmail.com</strong>.
-                </div>
+                <NoticeMessage />
                 <div className="my-12 border-b text-center">
                   <div className="leading-none px-2 inline-block text-sm text-red-600 tracking-wide font-medium bg-white transform translate-y-1/2">
                     IMPORTANT INFORMATION
@@ -427,7 +427,7 @@ class Elections extends Component {
                     </button>
                   </div>
                 </form> */}
-                <Navigation role={role} />
+                <Navigation role={role} history={history} />
               </div>
             </div>
           </div>

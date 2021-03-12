@@ -133,6 +133,8 @@ class Nominations extends Component {
     // console.log("nominees: ", nominees);
     // console.log("nominations: ", nominations);
 
+    const { history } = this.props;
+
     if (!loaded) {
       return "Loading...";
     }
@@ -287,7 +289,7 @@ class Nominations extends Component {
                     </div>
                   </React.Fragment>
                 ) : null}
-                <Navigation role={role} />
+                <Navigation role={role} history={history} />
               </div>
             </div>
           </div>

@@ -74,6 +74,8 @@ class AdminDashboard extends Component {
       loaded,
     } = this.state;
 
+    const { history } = this.props;
+
     if (!loaded) {
       return "Loading...";
     }
@@ -94,7 +96,7 @@ class AdminDashboard extends Component {
                 </div>
 
                 <AdminNavigation />
-                <Navigation role={role} />
+                <Navigation role={role} history={history} />
               </div>
             </div>
           </div>

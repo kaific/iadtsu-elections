@@ -87,7 +87,7 @@ const Dashboard = ({ history }) => {
                 Name: {pref_first_name} {last_name}
                 <br />
               </div>
-              <Navigation role={role} />
+              <Navigation role={role} history={history} />
             </div>
           </div>
         </div>

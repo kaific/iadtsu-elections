@@ -75,6 +75,8 @@ class AdminUsers extends Component {
       loaded,
     } = this.state;
 
+    const { history } = this.props;
+
     if (!loaded) {
       return "Loading...";
     }
@@ -99,7 +101,7 @@ class AdminUsers extends Component {
                 <div className="mx-auto max-w-xs relative ">
                   Under Construction.
                 </div>
-                <Navigation role={role} />
+                <Navigation role={role} history={history} />
               </div>
             </div>
           </div>

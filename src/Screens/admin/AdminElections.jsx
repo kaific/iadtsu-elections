@@ -134,6 +134,8 @@ class AdminElections extends Component {
       loaded,
     } = this.state;
 
+    const { history } = this.props;
+
     if (!loaded) {
       return "Loading...";
     }
@@ -303,7 +305,7 @@ class AdminElections extends Component {
                     </tbody>
                   </table>
                 </div> */}
-                <Navigation role={role} />
+                <Navigation role={role} history={history} />
               </div>
             </div>
           </div>

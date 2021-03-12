@@ -105,6 +105,8 @@ class AdminNominations extends Component {
       loaded,
     } = this.state;
 
+    const { history } = this.props;
+
     if (!loaded) {
       return "Loading...";
     }
@@ -196,7 +198,7 @@ class AdminNominations extends Component {
                       })
                     : "There are no nominees."}
                 </div>
-                <Navigation role={role} />
+                <Navigation role={role} history={history} />
               </div>
             </div>
           </div>
