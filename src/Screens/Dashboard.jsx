@@ -24,6 +24,7 @@ const Dashboard = ({ history }) => {
 
   const loadProfile = () => {
     const token = getCookie("token");
+    console.log(token);
     axios
       .get(`${process.env.REACT_APP_API_URL}/user/${isAuth()._id}`, {
         headers: {

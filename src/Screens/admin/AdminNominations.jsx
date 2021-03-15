@@ -20,6 +20,8 @@ class AdminNominations extends Component {
       last_name: "",
       pref_first_name: "",
       student_number: "",
+      nomPeriods: [],
+      activePeriods: [],
       nominees: [],
       nominations: [],
       loaded: false,
@@ -29,10 +31,40 @@ class AdminNominations extends Component {
   componentDidMount() {
     this.setState({ token: getCookie("token") }, async () => {
       await this.loadProfile();
+      await this.loadNomPeriods();
+      await this.loadActives();
       await this.loadNominees();
       await this.loadNominations();
     });
   }
+
+  loadNomPeriods = async () => {
+    await axios
+      .get(`${process.env.REACT_APP_API_URL}/nomination/period`, {
+        headers: {
+          Authorization: `Bearer ${this.state.token}`,
+        },
+      })
+      .then((res) => {
+        this.setState({ nomPeriods: res.data });
+      })
+      .catch((err) => {
+        toast.error(`Could not retrieve nomination period data.`);
+      });
+  };
+
+  loadActives = async () => {
+    await axios
+      .get(`${process.env.REACT_APP_API_URL}/active`)
+      .then((res) => {
+        this.setState({
+          activePeriods: res.data.filter((a) => a.type == "nomination"),
+        });
+      })
+      .catch((err) => {
+        toast.error(err);
+      });
+  };
 
   loadProfile = async () => {
     await axios
@@ -89,9 +121,17 @@ class AdminNominations extends Component {
         this.setState({ nominations: res.data, loaded: true });
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        toast.error(err);
         this.setState({ loaded: true });
       });
+  };
+
+  closePeriod = async (id) => {
+    await axios.delete(`${process.env.REACT_APP_API_URL}/active/${id}`, {
+      headers: {
+        Authorization: `Bearer ${this.state.token}`,
+      },
+    });
   };
 
   render() {
@@ -102,14 +142,32 @@ class AdminNominations extends Component {
       student_number,
       textChange,
       role,
+      activePeriods,
       loaded,
     } = this.state;
-
+    let { nomPeriods } = this.state;
     const { history } = this.props;
 
     if (!loaded) {
       return "Loading...";
     }
+
+    nomPeriods = nomPeriods.map((p, i) => {
+      let year = p.startDate.substring(0, 4);
+      p.year = year;
+
+      activePeriods.map((a, i) => {
+        if (p._id == a.refId) {
+          p.active = true;
+        } else {
+          p.active = false;
+        }
+      });
+
+      return p;
+    });
+    console.log("all", nomPeriods);
+    console.log("active", activePeriods);
 
     const { nominees, nominations } = this.state;
     return (
@@ -130,68 +188,132 @@ class AdminNominations extends Component {
                     Nominations
                   </div>
                 </div>
+
+                <div className="mx-auto px-auto max-w-xl relative text-center">
+                  <table className="shadow-lg mb-12 mx-auto text-orange-800">
+                    <thead>
+                      <tr>
+                        <th
+                          className="bg-orange-200 border text-center px-8 py-4"
+                          colSpan="4"
+                        >
+                          Nomination Periods
+                        </th>
+                      </tr>
+                      <tr>
+                        <th className="border text-left px-8 py-2">Type</th>
+                        <th className="border text-left px-8 py-2">Year</th>
+                        <th className="border text-left px-8 py-2">Active</th>
+                        <th className="border text-left px-8 py-2">Action</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {nomPeriods.map((nomPeriod, i) => {
+                        return (
+                          <tr key={i}>
+                            <td className="border text-left px-8 py-2">
+                              {nomPeriod.byElection
+                                ? "By-Election"
+                                : "Main Election"}
+                            </td>
+                            <td className="border text-left px-8 py-2">
+                              {nomPeriod.year}
+                            </td>
+                            <td className="border text-left px-8 py-2">
+                              {nomPeriod.active ? "Active" : "Inactive"}
+                            </td>
+                            <td className="border text-left px-8 py-2">
+                              {nomPeriod.active ? (
+                                <button
+                                  onClick={() => {
+                                    this.closePeriod(nomPeriod._id);
+                                  }}
+                                  className="font-semibold bg-red-500 text-gray-100 py-2 rounded-lg hover:bg-red-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                                >
+                                  <span className="mx-3">Close</span>
+                                </button>
+                              ) : (
+                                <button
+                                  onClick={() => {}}
+                                  className="font-semibold bg-green-500 text-gray-100 py-2 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                                >
+                                  <span className="mx-3">Open</span>
+                                </button>
+                              )}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
                 <div className="mx-auto px-auto max-w-xl relative text-center">
                   {!isEmpty(nominees)
                     ? nominees.map((n, i) => {
                         return (
                           <React.Fragment key={i}>
                             <table className="shadow-lg mb-4 mx-auto">
-                              <tr>
-                                <th
-                                  className="bg-blue-100 border text-center px-8 py-4"
-                                  colSpan="3"
-                                >
-                                  {n.user.pref_first_name} {n.user.last_name} -{" "}
-                                  {n.user.student_number} ({n.role}) -
-                                  Nominations
-                                </th>
-                              </tr>
-                              <tr>
-                                <th className="border text-left px-8 py-2"></th>
-                                <th className="border text-left px-8 py-2">
-                                  Name
-                                </th>
-                                <th className="border text-left px-8 py-2">
-                                  Student Number
-                                </th>
-                              </tr>
-                              {!isEmpty(
-                                nominations.filter(
-                                  (nom) =>
-                                    nom.nominee && nom.nominee._id == n._id
-                                )
-                              ) ? (
-                                nominations
-                                  .filter(
+                              <thead>
+                                <tr>
+                                  <th
+                                    className="bg-blue-100 border text-center px-8 py-4"
+                                    colSpan="3"
+                                  >
+                                    {n.user.pref_first_name} {n.user.last_name}{" "}
+                                    - {n.user.student_number} ({n.role}) -
+                                    Nominations
+                                  </th>
+                                </tr>
+                                <tr>
+                                  <th className="border text-left px-8 py-2"></th>
+                                  <th className="border text-left px-8 py-2">
+                                    Name
+                                  </th>
+                                  <th className="border text-left px-8 py-2">
+                                    Student Number
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {!isEmpty(
+                                  nominations.filter(
                                     (nom) =>
                                       nom.nominee && nom.nominee._id == n._id
                                   )
-                                  .map((nom, i) => {
-                                    return (
-                                      <tr key={i}>
-                                        <td className="border text-left px-8 py-2">
-                                          {i + 1}
-                                        </td>
-                                        <td className="border text-left px-8 py-2">
-                                          {nom.signature.pref_first_name}{" "}
-                                          {nom.signature.last_name}
-                                        </td>
-                                        <td className="border text-left px-8 py-2">
-                                          {nom.signature.student_number}
-                                        </td>
-                                      </tr>
-                                    );
-                                  })
-                              ) : (
-                                <tr>
-                                  <td
-                                    className="border text-left px-8 py-2"
-                                    colSpan="3"
-                                  >
-                                    This nominee does not have any signatures.
-                                  </td>
-                                </tr>
-                              )}
+                                ) ? (
+                                  nominations
+                                    .filter(
+                                      (nom) =>
+                                        nom.nominee && nom.nominee._id == n._id
+                                    )
+                                    .map((nom, i) => {
+                                      return (
+                                        <tr key={i}>
+                                          <td className="border text-left px-8 py-2">
+                                            {i + 1}
+                                          </td>
+                                          <td className="border text-left px-8 py-2">
+                                            {nom.signature.pref_first_name}{" "}
+                                            {nom.signature.last_name}
+                                          </td>
+                                          <td className="border text-left px-8 py-2">
+                                            {nom.signature.student_number}
+                                          </td>
+                                        </tr>
+                                      );
+                                    })
+                                ) : (
+                                  <tr>
+                                    <td
+                                      className="border text-left px-8 py-2"
+                                      colSpan="3"
+                                    >
+                                      This nominee does not have any signatures.
+                                    </td>
+                                  </tr>
+                                )}
+                              </tbody>
                             </table>
                           </React.Fragment>
                         );

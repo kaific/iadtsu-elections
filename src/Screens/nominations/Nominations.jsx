@@ -24,6 +24,7 @@ class Nominations extends Component {
       role: "",
       nominees: {},
       loaded: false,
+      nomPeriod: false,
       nominations: {},
       signatures: {},
     };
@@ -39,9 +40,22 @@ class Nominations extends Component {
   }
 
   loadNominees = async () => {
+    let nomPeriodId = "";
+    await axios
+      .get(`${process.env.REACT_APP_API_URL}/active`)
+      .then((res) => {
+        let activeNom = res.data.filter((a) => a.type == "nomination")[0];
+        nomPeriodId = activeNom.refId;
+        this.setState({ nomPeriod: true });
+      })
+      .catch((err) => {
+        toast.error(`There are no nominations running.`);
+        this.setState({ loaded: true, nomPeriod: false });
+      });
+
     await axios
       .post(`${process.env.REACT_APP_API_URL}/nomination/nominees`, {
-        year: 2021,
+        nominationPeriod: nomPeriodId,
       })
       .then((res) => {
         this.setState({ nominees: res.data, loaded: true });
@@ -127,6 +141,7 @@ class Nominations extends Component {
       nominees,
       nominations,
       signatures,
+      nomPeriod,
       loaded,
     } = this.state;
 
@@ -172,79 +187,81 @@ class Nominations extends Component {
                 </div>
                 <div className="mx-auto max-w-xs relative ">
                   {/* Nominations are now closed. Thanks for your participation! */}
-                  {!isEmpty(nominees)
-                    ? nominees.map((n, i) => {
-                        if (
-                          n.user.student_number == this.state.student_number
-                        ) {
-                          return (
-                            <a
-                              key={i}
-                              className="mt-5 tracking-wide font-semibold bg-gray-600 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                              onClick={() =>
-                                toast.error(
-                                  "You can't sign your own nomination."
-                                )
+                  {nomPeriod
+                    ? !isEmpty(nominees)
+                      ? nominees.map((n, i) => {
+                          if (
+                            n.user.student_number == this.state.student_number
+                          ) {
+                            return (
+                              <a
+                                key={i}
+                                className="mt-5 tracking-wide font-semibold bg-gray-600 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                                onClick={() =>
+                                  toast.error(
+                                    "You can't sign your own nomination."
+                                  )
+                                }
+                              >
+                                <i className="fas fa-user  w-6  -ml-2" />
+                                <span className="ml-1">
+                                  <strike>
+                                    {n.user.pref_first_name} {n.user.last_name}{" "}
+                                    for {n.role}
+                                  </strike>
+                                </span>
+                              </a>
+                            );
+                          } else if (signed.includes(n._id)) {
+                            return nominations.map((nomination) => {
+                              if (nomination.nominee) {
+                                if (n._id == nomination.nominee._id) {
+                                  return (
+                                    <a
+                                      key={i}
+                                      className="mt-5 tracking-wide font-semibold bg-gray-600 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                                      onClick={() =>
+                                        toast.error(
+                                          "You have already nominated this person."
+                                        )
+                                      }
+                                    >
+                                      <i className="fas fa-user w-6 -ml-2" />
+                                      <span className="ml-1">
+                                        <strike>
+                                          {n.user.pref_first_name}{" "}
+                                          {n.user.last_name} for {n.role}
+                                        </strike>
+                                      </span>
+                                    </a>
+                                  );
+                                }
                               }
-                            >
-                              <i className="fas fa-user  w-6  -ml-2" />
-                              <span className="ml-1">
-                                <strike>
+                            });
+                          } else {
+                            return (
+                              <Link
+                                to={{
+                                  pathname: `/nominations/nominate/${n._id}`,
+                                  state: { nominee: n },
+                                }}
+                                key={i}
+                                className="mt-5 tracking-wide font-semibold bg-gray-600 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                              >
+                                <i className="fas fa-user  w-6  -ml-2" />
+                                <span className="ml-1">
                                   {n.user.pref_first_name} {n.user.last_name}{" "}
                                   for {n.role}
-                                </strike>
-                              </span>
-                            </a>
-                          );
-                        } else if (signed.includes(n._id)) {
-                          return nominations.map((nomination) => {
-                            if (nomination.nominee) {
-                              if (n._id == nomination.nominee._id) {
-                                return (
-                                  <a
-                                    key={i}
-                                    className="mt-5 tracking-wide font-semibold bg-gray-600 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                                    onClick={() =>
-                                      toast.error(
-                                        "You have already nominated this person."
-                                      )
-                                    }
-                                  >
-                                    <i className="fas fa-user w-6 -ml-2" />
-                                    <span className="ml-1">
-                                      <strike>
-                                        {n.user.pref_first_name}{" "}
-                                        {n.user.last_name} for {n.role}
-                                      </strike>
-                                    </span>
-                                  </a>
-                                );
-                              }
-                            }
-                          });
-                        } else {
-                          return (
-                            <Link
-                              to={{
-                                pathname: `/nominations/nominate/${n._id}`,
-                                state: { nominee: n },
-                              }}
-                              key={i}
-                              className="mt-5 tracking-wide font-semibold bg-gray-600 text-gray-100 w-full py-4 rounded-lg hover:bg-gray-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                            >
-                              <i className="fas fa-user  w-6  -ml-2" />
-                              <span className="ml-1">
-                                {n.user.pref_first_name} {n.user.last_name} for{" "}
-                                {n.role}
-                              </span>
-                            </Link>
-                          );
-                        }
-                      })
-                    : "No nominees yet."}
+                                </span>
+                              </Link>
+                            );
+                          }
+                        })
+                      : "No nominees yet."
+                    : "Nominations are now closed. Thank you for your participation!"}
                 </div>
                 {/* If not a nominee */}
-                {!nominated ? (
+                {nomPeriod && !nominated ? (
                   <React.Fragment>
                     <div className="my-12 border-b text-center">
                       <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
