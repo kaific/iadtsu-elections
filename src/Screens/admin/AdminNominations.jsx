@@ -100,9 +100,12 @@ class AdminNominations extends Component {
   };
 
   loadNominees = async () => {
+    const { nomPeriods } = this.state;
+    let nomPeriodId = nomPeriods[0]._id;
+
     await axios
       .post(`${process.env.REACT_APP_API_URL}/nomination/nominees`, {
-        year: 2021,
+        nominationPeriod: nomPeriodId,
       })
       .then((res) => {
         this.setState({ nominees: res.data });

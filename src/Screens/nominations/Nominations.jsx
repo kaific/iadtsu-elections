@@ -53,17 +53,19 @@ class Nominations extends Component {
         this.setState({ loaded: true, nomPeriod: false });
       });
 
-    await axios
-      .post(`${process.env.REACT_APP_API_URL}/nomination/nominees`, {
-        nominationPeriod: nomPeriodId,
-      })
-      .then((res) => {
-        this.setState({ nominees: res.data, loaded: true });
-      })
-      .catch((err) => {
-        toast.error(`Could not retrieve nominees data.`);
-        this.setState({ loaded: true });
-      });
+    if (this.state.nomPeriod) {
+      await axios
+        .post(`${process.env.REACT_APP_API_URL}/nomination/nominees`, {
+          nominationPeriod: nomPeriodId,
+        })
+        .then((res) => {
+          this.setState({ nominees: res.data, loaded: true });
+        })
+        .catch((err) => {
+          toast.error(`Could not retrieve nominees data.`);
+          this.setState({ loaded: true });
+        });
+    }
   };
 
   loadNominations = async () => {
@@ -156,11 +158,13 @@ class Nominations extends Component {
 
     let nominated = false;
     // Check if user has entered nominations
-    nominees.map((n) => {
-      if (n.user.student_number == student_number) {
-        return (nominated = true);
-      }
-    });
+    if (!isEmpty(nominees)) {
+      nominees.map((n) => {
+        if (n.user.student_number == student_number) {
+          return (nominated = true);
+        }
+      });
+    }
     // console.log("nominated: " + nominated);
 
     let signed = nominations.map((sign) => {
