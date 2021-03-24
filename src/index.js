@@ -20,6 +20,7 @@ import Elections from "./Screens/elections/Elections";
 import AdminDashboard from "./Screens/admin/AdminDashboard";
 import AdminNominations from "./Screens/admin/AdminNominations";
 import AdminElections from "./Screens/admin/AdminElections";
+import CreateElection from "./Screens/admin/elections/Create";
 import AdminUsers from "./Screens/admin/AdminUsers";
 
 import PrivateRoute from "./Routes/PrivateRoute";
@@ -63,7 +64,7 @@ ReactDOM.render(
         exact
         component={EnterNomination}
       />
-      {/* <PrivateRoute path="/elections" exact component={Elections} /> */}
+      <PrivateRoute path="/elections" exact component={Elections} />
 
       <AdminRoute path="/admin" exact component={AdminDashboard} />
       <AdminRoute
@@ -72,6 +73,11 @@ ReactDOM.render(
         component={AdminNominations}
       />
       <AdminRoute path="/admin/elections" exact component={AdminElections} />
+      <AdminRoute
+        path="/admin/elections/new"
+        exact
+        component={CreateElection}
+      />
       <AdminRoute path="/admin/users" exact component={AdminUsers} />
     </Switch>
   </BrowserRouter>,

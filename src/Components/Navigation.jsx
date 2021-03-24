@@ -28,20 +28,20 @@ const Navigation = (props) => (
         <i className="fas fa-sign-in-alt  w-6  -ml-2" />
         <span className="ml-3">Dashboard</span>
       </Link>
-      <Link
+      {/* <Link
         to="/nominations"
         className="mt-5 tracking-wide font-semibold bg-orange-500 text-gray-100 w-full py-4 rounded-lg hover:bg-orange-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
       >
         <i className="fas fa-sign-in-alt  w-6  -ml-2" />
         <span className="ml-3">Nominations</span>
-      </Link>
-      {/* <Link
+      </Link> */}
+      <Link
         to="/elections"
-        className="mt-5 tracking-wide font-semibold bg-purple-500 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+        className="mt-5 tracking-wide font-semibold bg-purple-600 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
       >
         <i className="fas fa-sign-in-alt  w-6  -ml-2" />
-        <span className="ml-3">Dashboard</span>
-      </Link> */}
+        <span className="ml-3">Elections</span>
+      </Link>
       <button
         onClick={() => {
           signout(() => {
