@@ -262,6 +262,20 @@ class AdminElections extends Component {
       "gaeilge",
     ];
 
+    let renominations = [];
+    roles.map((r) => {
+      renominations[r] = [];
+      return ballots.map((b) => {
+        if (!isEmpty(b.reopenNominations)) {
+          b.reopenNominations
+            .filter((renom) => renom.role === r)
+            .map((rn) => renominations[r].push(rn));
+        }
+        return;
+      });
+    });
+    // console.log("renoms", renominations);
+
     return (
       <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
         <ToastContainer />
@@ -518,17 +532,7 @@ class AdminElections extends Component {
                                         <strong>Renominations</strong>
                                       </td>
                                       <td className="border text-center px-2 py-1">
-                                        {ballots.map((b, i) => {
-                                          count = 0;
-                                          return b.reopenNominations.map(
-                                            (v, i) => {
-                                              if (v && v.role == r) {
-                                                count++;
-                                              }
-                                            }
-                                          );
-                                        })}
-                                        {count}
+                                        {renominations[r].length}
                                       </td>
                                     </tr>
                                   </React.Fragment>
