@@ -571,7 +571,7 @@ class Elections extends Component {
                   </div>
                 ) : !electionOpen ? (
                   <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
-                    Voting will start at 10:00 on 28th April!
+                    Voting will start at 10:00 on 28th April.
                   </div>
                 ) : (
                   ""
