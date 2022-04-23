@@ -307,13 +307,8 @@ class Elections extends Component {
         },
       })
       .then((res) => {
-        const {
-          role,
-          first_name,
-          last_name,
-          pref_first_name,
-          student_number,
-        } = res.data;
+        const { role, first_name, last_name, pref_first_name, student_number } =
+          res.data;
         this.setState({
           role,
           first_name,
@@ -389,7 +384,7 @@ class Elections extends Component {
     let electionOpen = currentTime >= electionTime && currentTime < electionEnd;
 
     console.log(currentTime);
-    console.log(electionEnd);
+    console.log(electionOpen);
     // console.log("actives", actives);
     // console.log("candidates", candidates);
     // console.log("election", election);
@@ -399,7 +394,7 @@ class Elections extends Component {
         <ToastContainer />
         <div className="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1">
           <div className="lg:w-1/2 xl:w-8/12 p-6 sm:p-12">
-            <div className="mt-12 flex flex-col items-center">
+            <div className="flex flex-col items-center">
               <Link to="/" className="text-xl xl:text-xl text-center ">
                 {"<"} Home
               </Link>
@@ -411,7 +406,7 @@ class Elections extends Component {
                   </div>
                 </div>
                 <div className="mx-auto max-w-xs relative text-center font-medium text-gray-800">
-                  Hi {pref_first_name}! Welcome to IADTSU Elections 2021.
+                  Hi {pref_first_name}! Welcome to IADTSU Elections 2022.
                   <br />
                   {/* Voting is now closed. Thank you for your participation. */}
                   Please fill out your digital ballot carefully.{" "}
@@ -444,7 +439,7 @@ class Elections extends Component {
                   ""
                 ) : !electionOpen && currentTime < electionTime ? (
                   <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
-                    Elections will open at 10:00 on 24th March 2021!
+                    Voting will start at 10:00 on 28th April!
                   </div>
                 ) : !(currentTime < electionEnd) ? (
                   ""
@@ -573,6 +568,10 @@ class Elections extends Component {
                 {!electionOpen && currentTime >= electionEnd ? (
                   <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
                     Elections are now closed! Thank you for your participation!
+                  </div>
+                ) : !electionOpen ? (
+                  <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
+                    Voting will start at 10:00 on 28th April!
                   </div>
                 ) : (
                   ""
