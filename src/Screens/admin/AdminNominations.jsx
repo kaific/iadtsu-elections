@@ -39,6 +39,7 @@ class AdminNominations extends Component {
   }
 
   loadNomPeriods = async () => {
+    console.log(this.state.token);
     await axios
       .get(`${process.env.REACT_APP_API_URL}/nomination/period`, {
         headers: {
@@ -74,13 +75,8 @@ class AdminNominations extends Component {
         },
       })
       .then((res) => {
-        const {
-          role,
-          first_name,
-          last_name,
-          pref_first_name,
-          student_number,
-        } = res.data;
+        const { role, first_name, last_name, pref_first_name, student_number } =
+          res.data;
         this.setState({
           role,
           first_name,

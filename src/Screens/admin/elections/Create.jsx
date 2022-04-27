@@ -76,13 +76,8 @@ class CreateElection extends Component {
         },
       })
       .then((res) => {
-        const {
-          role,
-          first_name,
-          last_name,
-          pref_first_name,
-          student_number,
-        } = res.data;
+        const { role, first_name, last_name, pref_first_name, student_number } =
+          res.data;
         this.setState({
           role,
         });
@@ -205,13 +200,8 @@ class CreateElection extends Component {
   };
 
   handleChange = (elId, id) => (e) => {
-    let {
-      candidates,
-      startDateTime,
-      startDateDate,
-      endDateTime,
-      endDateDate,
-    } = this.state;
+    let { candidates, startDateTime, startDateDate, endDateTime, endDateDate } =
+      this.state;
     let startDate, endDate;
     switch (elId) {
       case "nomPeriod":
@@ -230,10 +220,14 @@ class CreateElection extends Component {
 
       case "startDate":
         startDateDate = new Date(e.target.value).toISOString().split("T")[0];
+        console.log("startDateDate", startDateDate);
         startDate = new Date(startDateDate);
+        console.log("startDate", startDate);
+        console.log("startDateTime", startDateTime);
         startDate = new Date(
           startDate.getTime() + timeToMilliseconds(startDateTime)
         );
+        console.log("startDate", startDate);
         this.setState(
           {
             startDateDate,
@@ -244,6 +238,8 @@ class CreateElection extends Component {
         break;
 
       case "startDateTime":
+        console.log("new Date", new Date().getTime());
+        console.log("time", e.target.value);
         startDate = new Date(startDateDate);
         startDate = new Date(
           startDate.getTime() + timeToMilliseconds(e.target.value)

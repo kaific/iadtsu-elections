@@ -228,7 +228,9 @@ class Elections extends Component {
     await axios
       .get(`${process.env.REACT_APP_API_URL}/active`)
       .then((res) => {
-        this.setState({ actives: res.data });
+        this.setState({
+          actives: res.data.filter((a) => a.type == "election"),
+        });
       })
       .catch((err) => {
         toast.error(`Could not retrieve active elections data.`);
