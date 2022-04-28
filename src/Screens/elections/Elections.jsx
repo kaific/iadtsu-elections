@@ -394,8 +394,8 @@ class Elections extends Component {
       gaeilge: "Oifigeach na Gaeilge",
     };
 
-    // let currentTime = new Date().getTime();
-    let currentTime = new Date(election.startDate).getTime();
+    let currentTime = new Date().getTime();
+    // let currentTime = new Date(election.startDate).getTime();
     let electionTime = new Date(election.startDate).getTime();
     let electionEnd = new Date(election.endDate).getTime();
     let electionOpen = currentTime >= electionTime && currentTime < electionEnd;
