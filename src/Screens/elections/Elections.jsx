@@ -34,6 +34,7 @@ class Elections extends Component {
       referendum: "",
       voted: false,
       loaded: false,
+      raffle: false,
     };
   }
 
@@ -56,7 +57,7 @@ class Elections extends Component {
   };
 
   // Submit data to backend
-  handleSubmit = (e) => {
+  handleSubmit = async (e) => {
     e.preventDefault();
 
     const roles = [
@@ -95,6 +96,7 @@ class Elections extends Component {
       ents,
       socs,
       gaeilge,
+      raffle,
     } = this.state;
     const election = this.state.election._id;
 
@@ -211,13 +213,25 @@ class Elections extends Component {
       ballot.candidateVotes.push({ candidate: gaeilge, role: "gaeilge" });
     }
 
-    console.log(ballot);
+    // console.log(ballot);
 
-    axios
+    if (raffle) {
+      await axios
+        .post(`${process.env.REACT_APP_API_URL}/raffle/join`, { token })
+        .then((res) => {
+          console.log();
+        })
+        .catch((err) => {
+          console.log(err.response.data.error);
+          toast.error(err.response.data.error);
+        });
+    }
+
+    await axios
       .post(`${process.env.REACT_APP_API_URL}/election/vote`, ballot)
       .then((res) => {
         toast.success(res.data.message);
-        history.push("/dashboard");
+        history.push("/elections");
       })
       .catch((err) => {
         toast.error(err.response.data.error);
@@ -380,13 +394,14 @@ class Elections extends Component {
       gaeilge: "Oifigeach na Gaeilge",
     };
 
-    let currentTime = new Date().getTime();
+    // let currentTime = new Date().getTime();
+    let currentTime = new Date(election.startDate).getTime();
     let electionTime = new Date(election.startDate).getTime();
     let electionEnd = new Date(election.endDate).getTime();
     let electionOpen = currentTime >= electionTime && currentTime < electionEnd;
 
-    console.log(currentTime);
-    console.log(electionOpen);
+    // console.log(currentTime);
+    // console.log(electionOpen);
     // console.log("actives", actives);
     // console.log("candidates", candidates);
     // console.log("election", election);
@@ -448,7 +463,7 @@ class Elections extends Component {
                 ) : (
                   <>
                     <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
-                      Elections will close at 17:00 on 25th March 2021!
+                      Elections will close at 18:00 on 29th Friday 2022!
                     </div>
                     <form
                       className="w-full flex-1 mt-8 text-indigo-500"
@@ -549,6 +564,51 @@ class Elections extends Component {
                           </React.Fragment>
                         );
                       })}
+                      <div className="my-12 border-b text-center">
+                        <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
+                          Raffle
+                        </div>
+                      </div>
+                      <div className="mx-auto mb-12 max-w-xs relative text-center font-medium text-gray-800">
+                        Want to win the <br />
+                        <span className="">
+                          Wacom One Pen Display Tablet?
+                        </span>{" "}
+                        <br />
+                        Tick the box below to be included in the raffle.
+                      </div>
+                      <div className="mx-auto max-w-xs relative">
+                        <div className="text-gray-800 ml-2">
+                          <table className="shadow-lg mb-4 mx-auto">
+                            <tbody>
+                              <tr>
+                                <td
+                                  className="border text-left pl-2 py-1 md:w-48"
+                                  colSpan={3}
+                                >
+                                  <div className="flex items-center my-4">
+                                    <input
+                                      id="raffle"
+                                      type="radio"
+                                      name="raffle"
+                                      value={true}
+                                      className="hidden"
+                                      onChange={this.handleChange("raffle")}
+                                    />
+                                    <label
+                                      htmlFor="raffle"
+                                      className="flex items-center cursor-pointer"
+                                    >
+                                      <span className="w-8 h-8 inline-block mr-2 border border-grey flex-no-shrink"></span>
+                                      Join the Raffle
+                                    </label>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
 
                       <div className="my-12 border-b text-center">
                         <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
