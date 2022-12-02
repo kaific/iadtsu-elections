@@ -34,6 +34,14 @@ const Register = ({ history }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (first_name && last_name && student_number && password1) {
+      if (
+        student_number != "suwelfare" ||
+        student_number != "sueducation" ||
+        student_number != "supresident" ||
+        !student_number.match(/^n00[0-9]{6}$/)
+      ) {
+        return toast.error("Enter a valid student number.");
+      }
       if (password1 === password2) {
         axios
           .post(`${process.env.REACT_APP_API_URL}/register`, {
