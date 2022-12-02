@@ -31,13 +31,8 @@ class AdminDashboard extends Component {
         },
       })
       .then((res) => {
-        const {
-          role,
-          first_name,
-          last_name,
-          pref_first_name,
-          student_number,
-        } = res.data;
+        const { role, first_name, last_name, pref_first_name, student_number } =
+          res.data;
         this.setState({
           role,
           first_name,
@@ -76,6 +71,8 @@ class AdminDashboard extends Component {
 
     const { history } = this.props;
 
+    console.log(history);
+
     if (!loaded) {
       return "Loading...";
     }
@@ -95,7 +92,7 @@ class AdminDashboard extends Component {
                   <strong>welfareiadt@gmail.com</strong>.
                 </div>
 
-                <AdminNavigation />
+                <AdminNavigation history={history} />
                 <Navigation role={role} history={history} />
               </div>
             </div>

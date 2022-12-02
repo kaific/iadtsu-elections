@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, useLocation } from "react-router-dom";
 import axios from "axios";
 
 import NoticeMessage from "../Components/NoticeMessage";
@@ -32,13 +32,8 @@ const Dashboard = ({ history }) => {
         },
       })
       .then((res) => {
-        const {
-          role,
-          first_name,
-          last_name,
-          pref_first_name,
-          student_number,
-        } = res.data;
+        const { role, first_name, last_name, pref_first_name, student_number } =
+          res.data;
         setFormData({
           ...formData,
           role,
@@ -58,13 +53,8 @@ const Dashboard = ({ history }) => {
       });
   };
 
-  const {
-    last_name,
-    pref_first_name,
-    student_number,
-    textChange,
-    role,
-  } = formData;
+  const { last_name, pref_first_name, student_number, textChange, role } =
+    formData;
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">

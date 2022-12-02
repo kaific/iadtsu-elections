@@ -38,13 +38,8 @@ class AdminUsers extends Component {
         },
       })
       .then((res) => {
-        const {
-          role,
-          first_name,
-          last_name,
-          pref_first_name,
-          student_number,
-        } = res.data;
+        const { role, first_name, last_name, pref_first_name, student_number } =
+          res.data;
         this.setState({
           role,
           first_name,
@@ -92,7 +87,7 @@ class AdminUsers extends Component {
               </Link>
               <div className="w-full flex-1 mt-8 text-indigo-500">
                 <NoticeMessage />
-                <AdminNavigation />
+                <AdminNavigation history={history} />
                 <div className="my-12 border-b text-center">
                   <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
                     Users

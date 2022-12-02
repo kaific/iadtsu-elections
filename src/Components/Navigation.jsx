@@ -12,7 +12,8 @@ const Navigation = (props) => (
       </div>
     </div>
     <div className="mx-auto max-w-xs relative ">
-      {props.role === "admin" ? (
+      {props.role === "admin" &&
+      props.history.location.pathname !== "/admin" ? (
         <Link
           to="/admin"
           className="mt-5 tracking-wide font-semibold bg-green-500 text-gray-100 w-full py-4 rounded-lg hover:bg-green-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
@@ -21,27 +22,33 @@ const Navigation = (props) => (
           <span className="ml-3">Admin Dashboard</span>
         </Link>
       ) : null}
-      <Link
-        to="/dashboard"
-        className="mt-5 tracking-wide font-semibold bg-blue-500 text-gray-100 w-full py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-      >
-        <i className="fas fa-sign-in-alt  w-6  -ml-2" />
-        <span className="ml-3">Dashboard</span>
-      </Link>
-      {/* <Link
-        to="/nominations"
-        className="mt-5 tracking-wide font-semibold bg-orange-500 text-gray-100 w-full py-4 rounded-lg hover:bg-orange-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-      >
-        <i className="fas fa-sign-in-alt  w-6  -ml-2" />
-        <span className="ml-3">Nominations</span>
-      </Link> */}
-      <Link
-        to="/elections"
-        className="mt-5 tracking-wide font-semibold bg-purple-600 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-      >
-        <i className="fas fa-sign-in-alt  w-6  -ml-2" />
-        <span className="ml-3">Elections</span>
-      </Link>
+      {props.history.location.pathname !== "/dashboard" ? (
+        <Link
+          to="/dashboard"
+          className="mt-5 tracking-wide font-semibold bg-blue-500 text-gray-100 w-full py-4 rounded-lg hover:bg-blue-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+        >
+          <i className="fas fa-sign-in-alt  w-6  -ml-2" />
+          <span className="ml-3">Dashboard</span>
+        </Link>
+      ) : null}
+      {/* {props.history.location.pathname !== "/nominations" ? (
+        <Link
+          to="/nominations"
+          className="mt-5 tracking-wide font-semibold bg-orange-500 text-gray-100 w-full py-4 rounded-lg hover:bg-orange-700 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+        >
+          <i className="fas fa-sign-in-alt  w-6  -ml-2" />
+          <span className="ml-3">Nominations</span>
+        </Link>
+      ) : null} */}
+      {props.history.location.pathname !== "/elections" ? (
+        <Link
+          to="/elections"
+          className="mt-5 tracking-wide font-semibold bg-purple-600 text-gray-100 w-full py-4 rounded-lg hover:bg-purple-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+        >
+          <i className="fas fa-sign-in-alt  w-6  -ml-2" />
+          <span className="ml-3">Elections</span>
+        </Link>
+      ) : null}
       <button
         onClick={() => {
           signout(() => {
