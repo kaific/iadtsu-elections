@@ -5,6 +5,7 @@ import { Link, Redirect } from "react-router-dom";
 
 import authSvg from "../../assets/auth.svg";
 import { /*authenticate,*/ isAuth } from "../../helpers/auth";
+import NoticeMessage from "../../Components/NoticeMessage";
 
 const Register = ({ history }) => {
   const [formData, setFormData] = useState({
@@ -34,12 +35,15 @@ const Register = ({ history }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (first_name && last_name && student_number && password1) {
+      let regex = /^n00[0-9]{6}$/i;
+      let validStudentNumber = regex.test(student_number);
       if (
-        student_number != "suwelfare" ||
-        student_number != "sueducation" ||
-        student_number != "supresident" ||
-        !student_number.match(/^n00[0-9]{6}$/)
+        // student_number != "suwelfare" ||
+        // student_number != "sueducation" ||
+        // student_number != "supresident" ||
+        !validStudentNumber
       ) {
+        console.log("match?", validStudentNumber);
         return toast.error("Enter a valid student number.");
       }
       if (password1 === password2) {
@@ -86,6 +90,7 @@ const Register = ({ history }) => {
             <Link to="/" className="text-xl xl:text-xl text-center ">
               {"<"} Home
             </Link>
+            <NoticeMessage style={"my-6"} />
             <h1 className="text-2xl xl:text-3xl font-extrabold">
               Sign up for an Account
             </h1>

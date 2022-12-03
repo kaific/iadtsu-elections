@@ -65,7 +65,7 @@ const Activate = ({ match }) => {
               {"<"} Home
             </Link>
             <h1 className="text-2xl xl:text-3xl font-extrabold">
-              Welcome {user.first_name}
+              Welcome {user.pref_first_name}
             </h1>
 
             {activated ? (

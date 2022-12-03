@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { signout, isAuth } from "./helpers/auth";
 import { ToastContainer, toast } from "react-toastify";
+import NoticeMessage from "./Components/NoticeMessage";
 
 function App({ history }) {
   return (
@@ -13,8 +14,16 @@ function App({ history }) {
             <h1 className="text-2xl xl:text-2xl font-extrabold  text-center ">
               Welcome to the IADTSU Election System
             </h1>
+
             <div className="w-full flex-1 mt-8 text-indigo-500">
-              <div className="my-12 border-b text-center">
+              <NoticeMessage />
+              <div className="mx-auto max-w-xs relative text-center text-blue-700 mt-6">
+                Registration for the election system will be up on{" "}
+                <strong>Monday, 5th December</strong>. Please come back then. If
+                you have previously registered, you will have to{" "}
+                <strong>register again</strong>.
+              </div>
+              {/* <div className="my-12 border-b text-center">
                 <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
                   Select destination
                 </div>
@@ -61,7 +70,7 @@ function App({ history }) {
                     </button>
                   </>
                 ) : null}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

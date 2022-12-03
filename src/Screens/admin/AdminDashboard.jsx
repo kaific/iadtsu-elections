@@ -5,6 +5,7 @@ import axios from "axios";
 
 import AdminNavigation from "../../Components/AdminNavigation";
 import Navigation from "../../Components/Navigation";
+import NoticeMessage from "../../Components/NoticeMessage";
 
 import { updateUser, isAuth, getCookie, signout } from "../../helpers/auth";
 import { isEmpty } from "../../helpers/basic";
@@ -71,8 +72,6 @@ class AdminDashboard extends Component {
 
     const { history } = this.props;
 
-    console.log(history);
-
     if (!loaded) {
       return "Loading...";
     }
@@ -87,10 +86,7 @@ class AdminDashboard extends Component {
                 {"<"} Home
               </Link>
               <div className="w-full flex-1 mt-8 text-indigo-500">
-                <div className="mx-auto max-w-xs relative text-center text-blue-700">
-                  If you encounter any issues with the system, please email{" "}
-                  <strong>welfareiadt@gmail.com</strong>.
-                </div>
+                <NoticeMessage />
 
                 <AdminNavigation history={history} />
                 <Navigation role={role} history={history} />
