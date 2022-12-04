@@ -8,6 +8,7 @@ import NoticeMessage from "../../Components/NoticeMessage";
 
 import { isAuth, getCookie, signout } from "../../helpers/auth";
 import { isEmpty } from "../../helpers/basic";
+import ElectionMessage from "../../Components/ElectionMessage";
 
 class Elections extends Component {
   constructor(props) {
@@ -55,6 +56,285 @@ class Elections extends Component {
       // console.log(this.state[text]);
     });
   };
+
+  render() {
+    const {
+      first_name,
+      last_name,
+      pref_first_name,
+      student_number,
+      role,
+      election,
+      actives,
+      candidates,
+      referenda,
+      loaded,
+      voted,
+    } = this.state;
+
+    const { history } = this.props;
+
+    if (!loaded) {
+      return "Loading...";
+    }
+
+    // __________________________________________
+    //
+    // HARD CODED MANIPULATION, GET RID OF IT!!!
+    // __________________________________________
+    // let refDesc = referenda[0].description.split("\n");
+
+    const roles = [
+      "president",
+      "welfare",
+      "education",
+      "lgbtq",
+      "disability",
+      "mature",
+      "ents",
+      "socs",
+      "gaeilge",
+    ];
+
+    const roleNames = {
+      president: "President",
+      welfare: "VP for Welfare & Equality",
+      education: "VP for Education",
+      lgbtq: "LGBTQ+ Officer",
+      disability: "Disability Rights Officer",
+      mature: "Mature Students Officer",
+      ents: "Entertainments Officer",
+      socs: "Clubs & Societies Officer",
+      gaeilge: "Oifigeach na Gaeilge",
+    };
+
+    let currentTime = new Date().getTime();
+    // let currentTime = new Date(election.startDate).getTime();
+    let electionTime = new Date(Date.now()).getTime();
+    // let electionTime = new Date(election.startDate).getTime();
+    let electionEnd = new Date(election.endDate).getTime();
+    let electionOpen = currentTime >= electionTime && currentTime < electionEnd;
+
+    console.log("currentTime", currentTime);
+    console.log("electionTime", electionTime);
+    console.log("electionOpen", electionOpen);
+    console.log("actives", actives);
+    console.log("candidates", candidates);
+    console.log("election", election);
+
+    return (
+      <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
+        <ToastContainer />
+        <div className="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1">
+          <div className="lg:w-1/2 xl:w-8/12 p-6 sm:p-12">
+            <div className="flex flex-col items-center">
+              <Link to="/" className="text-xl xl:text-xl text-center ">
+                {"<"} Home
+              </Link>
+              <div className="w-full flex-1 mt-8 text-indigo-500">
+                <NoticeMessage />
+                <ElectionMessage name={pref_first_name} />
+                {voted && electionOpen ? (
+                  <>
+                    <div className="my-12 border-b text-center">
+                      <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
+                        Message
+                      </div>
+                    </div>
+                    <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
+                      Your ballot has been submitted. Thank you for voting! :)
+                    </div>
+                  </>
+                ) : isEmpty(candidates) ? (
+                  ""
+                ) : !electionOpen && currentTime < electionTime ? (
+                  <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
+                    Voting will start at 09:00 on Tuesday, 6th December!
+                  </div>
+                ) : !(currentTime < electionEnd) ? (
+                  ""
+                ) : (
+                  <>
+                    <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
+                      Elections will close at 18:00 on Wednesday, 7th December!
+                    </div>
+                    <form
+                      className="w-full flex-1 mt-8 text-indigo-500"
+                      onSubmit={this.handleSubmit}
+                    >
+                      {roles.map((role, index) => {
+                        let roleCands = candidates.filter(
+                          (c) => c.role === role
+                        );
+                        if (isEmpty(roleCands)) return;
+
+                        return (
+                          <React.Fragment key={index}>
+                            <div className="my-12 border-b text-center">
+                              <div className="leading-none px-2 inline-block text-md text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
+                                {roleNames[role]}
+                              </div>
+                            </div>
+                            <div className="mx-auto max-w-xs relative">
+                              <div className="text-gray-800 ml-2">
+                                <table className="shadow-lg mb-4 mx-auto">
+                                  <tbody>
+                                    {candidates
+                                      .filter((c) => c.role === role)
+                                      .map((c) => {
+                                        return (
+                                          <tr>
+                                            {c.photo ? (
+                                              <td className="border text-left px-2 py-1 md:w-48">
+                                                <img src={c.photo} />
+                                              </td>
+                                            ) : (
+                                              ""
+                                            )}
+
+                                            <td
+                                              className="border text-left pl-2 py-1 md:w-48"
+                                              colSpan={c.photo ? "1" : "2"}
+                                            >
+                                              <div className="flex items-center my-4">
+                                                <input
+                                                  id={
+                                                    c.user.pref_first_name +
+                                                    c.user.last_name
+                                                  }
+                                                  type="radio"
+                                                  name={role}
+                                                  value={c._id}
+                                                  className="hidden"
+                                                  onChange={this.handleChange(
+                                                    role
+                                                  )}
+                                                />
+                                                <label
+                                                  htmlFor={
+                                                    c.user.pref_first_name +
+                                                    c.user.last_name
+                                                  }
+                                                  className="flex items-center cursor-pointer"
+                                                >
+                                                  <span className="w-8 h-8 inline-block mr-2 border border-grey flex-no-shrink"></span>
+                                                  {c.user.pref_first_name}{" "}
+                                                  {c.user.last_name}
+                                                </label>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                        );
+                                      })}
+                                    <tr>
+                                      <td
+                                        className="border text-left px-2 py-1"
+                                        colSpan="2"
+                                      >
+                                        <div className="flex items-center mr-4 my-4">
+                                          <input
+                                            id={"reopen_" + role}
+                                            type="radio"
+                                            name={role}
+                                            value="reopen"
+                                            className="hidden"
+                                            onChange={this.handleChange(role)}
+                                          />
+                                          <label
+                                            htmlFor={"reopen_" + role}
+                                            className="flex items-center cursor-pointer"
+                                          >
+                                            <span className="w-8 h-8 inline-block mr-2 border border-grey flex-no-shrink"></span>
+                                            Reopen Nominations
+                                          </label>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </React.Fragment>
+                        );
+                      })}
+                      {/* <div className="my-12 border-b text-center">
+                        <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
+                          Raffle
+                        </div>
+                      </div>
+                      <div className="mx-auto mb-12 max-w-xs relative text-center font-medium text-gray-800">
+                        Want to win the <br />
+                        <span className="">
+                          Wacom One Pen Display Tablet?
+                        </span>{" "}
+                        <br />
+                        Tick the box below to be included in the raffle.
+                      </div>
+                      <div className="mx-auto max-w-xs relative">
+                        <div className="text-gray-800 ml-2">
+                          <table className="shadow-lg mb-4 mx-auto">
+                            <tbody>
+                              <tr>
+                                <td
+                                  className="border text-left pl-2 py-1 md:w-48"
+                                  colSpan={3}
+                                >
+                                  <div className="flex items-center my-4">
+                                    <input
+                                      id="raffle"
+                                      type="radio"
+                                      name="raffle"
+                                      value={true}
+                                      className="hidden"
+                                      onChange={this.handleChange("raffle")}
+                                    />
+                                    <label
+                                      htmlFor="raffle"
+                                      className="flex items-center cursor-pointer"
+                                    >
+                                      <span className="w-8 h-8 inline-block mr-2 border border-grey flex-no-shrink"></span>
+                                      Join the Raffle
+                                    </label>
+                                  </div>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div> */}
+
+                      <div className="my-12 border-b text-center">
+                        <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
+                          Submit your ballot
+                        </div>
+                      </div>
+                      <div className="mx-auto max-w-xs relative">
+                        <button
+                          onClick={this.handleSubmit}
+                          className="mt-5 tracking-wide font-semibold bg-red-600 text-gray-100 w-full py-4 rounded-lg hover:bg-red-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
+                        >
+                          <i className="fas fa-sign-out-alt  w-6  -ml-2" />
+                          <span className="ml-3">Submit Ballot</span>
+                        </button>
+                      </div>
+                    </form>
+                  </>
+                )}
+                {!electionOpen && currentTime >= electionEnd ? (
+                  <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
+                    Elections are now closed! Thank you for your participation!
+                  </div>
+                ) : (
+                  ""
+                )}
+                <Navigation role={role} history={history} />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Submit data to backend
   handleSubmit = async (e) => {
@@ -342,310 +622,6 @@ class Elections extends Component {
         }
       });
   };
-
-  render() {
-    const {
-      first_name,
-      last_name,
-      pref_first_name,
-      student_number,
-      role,
-      election,
-      actives,
-      candidates,
-      referenda,
-      loaded,
-      voted,
-    } = this.state;
-
-    const { history } = this.props;
-
-    if (!loaded) {
-      return "Loading...";
-    }
-
-    // __________________________________________
-    //
-    // HARD CODED MANIPULATION, GET RID OF IT!!!
-    // __________________________________________
-    // let refDesc = referenda[0].description.split("\n");
-
-    const roles = [
-      "president",
-      "welfare",
-      "education",
-      "lgbtq",
-      "disability",
-      "mature",
-      "ents",
-      "socs",
-      "gaeilge",
-    ];
-
-    const roleNames = {
-      president: "President",
-      welfare: "VP for Welfare & Equality",
-      education: "VP for Education",
-      lgbtq: "LGBTQ+ Officer",
-      disability: "Disability Rights Officer",
-      mature: "Mature Students Officer",
-      ents: "Entertainments Officer",
-      socs: "Clubs & Societies Officer",
-      gaeilge: "Oifigeach na Gaeilge",
-    };
-
-    let currentTime = new Date().getTime();
-    // let currentTime = new Date(election.startDate).getTime();
-    let electionTime = new Date(election.startDate).getTime();
-    let electionEnd = new Date(election.endDate).getTime();
-    let electionOpen = currentTime >= electionTime && currentTime < electionEnd;
-
-    // console.log(currentTime);
-    // console.log(electionOpen);
-    // console.log("actives", actives);
-    // console.log("candidates", candidates);
-    // console.log("election", election);
-
-    return (
-      <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
-        <ToastContainer />
-        <div className="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1">
-          <div className="lg:w-1/2 xl:w-8/12 p-6 sm:p-12">
-            <div className="flex flex-col items-center">
-              <Link to="/" className="text-xl xl:text-xl text-center ">
-                {"<"} Home
-              </Link>
-              <div className="w-full flex-1 mt-8 text-indigo-500">
-                <NoticeMessage />
-                <div className="my-12 border-b text-center">
-                  <div className="leading-none px-2 inline-block text-sm text-red-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                    IMPORTANT INFORMATION
-                  </div>
-                </div>
-                <div className="mx-auto max-w-xs relative text-center font-medium text-gray-800">
-                  Hi {pref_first_name}! Welcome to IADTSU Elections 2022.
-                  <br />
-                  {/* Voting is now closed. Thank you for your participation. */}
-                  Please fill out your digital ballot carefully.{" "}
-                  <span className="text-red-600">
-                    Once submitted, your votes are final.
-                  </span>
-                  <br />
-                  <br />
-                  You may vote separately for each role subject to this
-                  election, as well as any referenda. Choose your candidate for
-                  each, or vote to reopen nominations. Referenda can be voted
-                  for or against.
-                  <br />
-                  <br />
-                  To cast your vote, simply ensure that the box corresponding to
-                  your choice is selected.
-                </div>
-                {voted && electionOpen ? (
-                  <>
-                    <div className="my-12 border-b text-center">
-                      <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                        Message
-                      </div>
-                    </div>
-                    <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
-                      Your ballot has been submitted. Thank you for voting! :)
-                    </div>
-                  </>
-                ) : isEmpty(candidates) ? (
-                  ""
-                ) : !electionOpen && currentTime < electionTime ? (
-                  <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
-                    Voting will start at 10:00 on 28th April!
-                  </div>
-                ) : !(currentTime < electionEnd) ? (
-                  ""
-                ) : (
-                  <>
-                    <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
-                      Elections will close at 18:00 on 29th Friday 2022!
-                    </div>
-                    <form
-                      className="w-full flex-1 mt-8 text-indigo-500"
-                      onSubmit={this.handleSubmit}
-                    >
-                      {roles.map((role, index) => {
-                        let roleCands = candidates.filter(
-                          (c) => c.role === role
-                        );
-                        if (isEmpty(roleCands)) return;
-
-                        return (
-                          <React.Fragment key={index}>
-                            <div className="my-12 border-b text-center">
-                              <div className="leading-none px-2 inline-block text-md text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                                {roleNames[role]}
-                              </div>
-                            </div>
-                            <div className="mx-auto max-w-xs relative">
-                              <div className="text-gray-800 ml-2">
-                                <table className="shadow-lg mb-4 mx-auto">
-                                  <tbody>
-                                    {candidates
-                                      .filter((c) => c.role === role)
-                                      .map((c) => {
-                                        return (
-                                          <tr>
-                                            {c.photo ? (
-                                              <td className="border text-left px-2 py-1 md:w-48">
-                                                <img src={c.photo} />
-                                              </td>
-                                            ) : (
-                                              ""
-                                            )}
-
-                                            <td
-                                              className="border text-left pl-2 py-1 md:w-48"
-                                              colSpan={c.photo ? "1" : "2"}
-                                            >
-                                              <div className="flex items-center my-4">
-                                                <input
-                                                  id={
-                                                    c.user.pref_first_name +
-                                                    c.user.last_name
-                                                  }
-                                                  type="radio"
-                                                  name={role}
-                                                  value={c._id}
-                                                  className="hidden"
-                                                  onChange={this.handleChange(
-                                                    role
-                                                  )}
-                                                />
-                                                <label
-                                                  htmlFor={
-                                                    c.user.pref_first_name +
-                                                    c.user.last_name
-                                                  }
-                                                  className="flex items-center cursor-pointer"
-                                                >
-                                                  <span className="w-8 h-8 inline-block mr-2 border border-grey flex-no-shrink"></span>
-                                                  {c.user.pref_first_name}{" "}
-                                                  {c.user.last_name}
-                                                </label>
-                                              </div>
-                                            </td>
-                                          </tr>
-                                        );
-                                      })}
-                                    <tr>
-                                      <td
-                                        className="border text-left px-2 py-1"
-                                        colSpan="2"
-                                      >
-                                        <div className="flex items-center mr-4 my-4">
-                                          <input
-                                            id={"reopen_" + role}
-                                            type="radio"
-                                            name={role}
-                                            value="reopen"
-                                            className="hidden"
-                                            onChange={this.handleChange(role)}
-                                          />
-                                          <label
-                                            htmlFor={"reopen_" + role}
-                                            className="flex items-center cursor-pointer"
-                                          >
-                                            <span className="w-8 h-8 inline-block mr-2 border border-grey flex-no-shrink"></span>
-                                            Reopen Nominations
-                                          </label>
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </div>
-                            </div>
-                          </React.Fragment>
-                        );
-                      })}
-                      <div className="my-12 border-b text-center">
-                        <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                          Raffle
-                        </div>
-                      </div>
-                      <div className="mx-auto mb-12 max-w-xs relative text-center font-medium text-gray-800">
-                        Want to win the <br />
-                        <span className="">
-                          Wacom One Pen Display Tablet?
-                        </span>{" "}
-                        <br />
-                        Tick the box below to be included in the raffle.
-                      </div>
-                      <div className="mx-auto max-w-xs relative">
-                        <div className="text-gray-800 ml-2">
-                          <table className="shadow-lg mb-4 mx-auto">
-                            <tbody>
-                              <tr>
-                                <td
-                                  className="border text-left pl-2 py-1 md:w-48"
-                                  colSpan={3}
-                                >
-                                  <div className="flex items-center my-4">
-                                    <input
-                                      id="raffle"
-                                      type="radio"
-                                      name="raffle"
-                                      value={true}
-                                      className="hidden"
-                                      onChange={this.handleChange("raffle")}
-                                    />
-                                    <label
-                                      htmlFor="raffle"
-                                      className="flex items-center cursor-pointer"
-                                    >
-                                      <span className="w-8 h-8 inline-block mr-2 border border-grey flex-no-shrink"></span>
-                                      Join the Raffle
-                                    </label>
-                                  </div>
-                                </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-
-                      <div className="my-12 border-b text-center">
-                        <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
-                          Submit your ballot
-                        </div>
-                      </div>
-                      <div className="mx-auto max-w-xs relative">
-                        <button
-                          onClick={this.handleSubmit}
-                          className="mt-5 tracking-wide font-semibold bg-red-600 text-gray-100 w-full py-4 rounded-lg hover:bg-red-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
-                        >
-                          <i className="fas fa-sign-out-alt  w-6  -ml-2" />
-                          <span className="ml-3">Submit Ballot</span>
-                        </button>
-                      </div>
-                    </form>
-                  </>
-                )}
-                {!electionOpen && currentTime >= electionEnd ? (
-                  <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
-                    Elections are now closed! Thank you for your participation!
-                  </div>
-                ) : !electionOpen ? (
-                  <div className="mx-auto max-w-xs relative text-center mt-6 font-medium text-gray-800">
-                    Voting will start at 10:00 on 28th April.
-                  </div>
-                ) : (
-                  ""
-                )}
-                <Navigation role={role} history={history} />
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
 }
 
 export default Elections;

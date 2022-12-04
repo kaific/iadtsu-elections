@@ -238,13 +238,13 @@ class AdminElections extends Component {
 
     let canColor = true;
 
-    console.log("elections", elecs);
-    console.log("chosen election", chosenElectionId);
+    // console.log("elections", elecs);
+    // console.log("chosen election", chosenElectionId);
 
-    console.log("candidates", candidates);
-    // console.log("referenda", referenda);
-    console.log("ballots", ballots);
-    console.log("actives", actives);
+    // console.log("candidates", candidates);
+    // // console.log("referenda", referenda);
+    // console.log("ballots", ballots);
+    // console.log("actives", actives);
     const roles = [
       "president",
       "welfare",
@@ -258,17 +258,20 @@ class AdminElections extends Component {
     ];
 
     let renominations = [];
-    roles.map((r) => {
-      renominations[r] = [];
-      return ballots.map((b) => {
-        if (!isEmpty(b.reopenNominations)) {
-          b.reopenNominations
-            .filter((renom) => renom.role === r)
-            .map((rn) => renominations[r].push(rn));
-        }
-        return;
+    if (!isEmpty(ballots)) {
+      roles.map((r) => {
+        renominations[r] = [];
+        return ballots.map((b) => {
+          if (!isEmpty(b.reopenNominations)) {
+            b.reopenNominations
+              .filter((renom) => renom.role === r)
+              .map((rn) => renominations[r].push(rn));
+          }
+          return;
+        });
       });
-    });
+    }
+
     // console.log("renoms", renominations);
 
     return (
@@ -511,6 +514,7 @@ class AdminElections extends Component {
                                         );
                                       }
                                     })}
+
                                     <tr
                                       className={
                                         !canColor ? "bg-purple-200" : ""
@@ -527,7 +531,9 @@ class AdminElections extends Component {
                                         <strong>Renominations</strong>
                                       </td>
                                       <td className="border text-center px-2 py-1">
-                                        {renominations[r].length}
+                                        {!isEmpty(renominations)
+                                          ? renominations[r].length
+                                          : "0"}
                                       </td>
                                     </tr>
                                   </React.Fragment>

@@ -53,7 +53,7 @@ ReactDOM.render(
       />
 
       <PrivateRoute path="/dashboard" exact component={Dashboard} />
-      <PrivateRoute path="/nominations" exact component={Nominations} />
+      {/* <PrivateRoute path="/nominations" exact component={Nominations} />
       <PrivateRoute
         path="/nominations/nominate/:id"
         exact
@@ -63,7 +63,7 @@ ReactDOM.render(
         path="/nominations/enter"
         exact
         component={EnterNomination}
-      />
+      /> */}
       <PrivateRoute path="/elections" exact component={Elections} />
 
       <AdminRoute path="/admin" exact component={AdminDashboard} />

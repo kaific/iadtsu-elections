@@ -51,8 +51,8 @@ class CreateElection extends Component {
         ).toISOString(),
       },
       async () => {
-        console.log(this.state.startDate);
-        console.log(this.state.endDate);
+        // console.log(this.state.startDate);
+        // console.log(this.state.endDate);
         await this.loadProfile();
         await this.loadNomPeriods();
         await this.loadNominees();
@@ -67,292 +67,6 @@ class CreateElection extends Component {
       });
     }
   }
-
-  loadProfile = async () => {
-    await axios
-      .get(`${process.env.REACT_APP_API_URL}/user/${isAuth()._id}`, {
-        headers: {
-          Authorization: `Bearer ${this.state.token}`,
-        },
-      })
-      .then((res) => {
-        const { role, first_name, last_name, pref_first_name, student_number } =
-          res.data;
-        this.setState({
-          role,
-        });
-      })
-      .catch((err) => {
-        toast.error(`Error To Your Information ${err.response.statusText}`);
-        if (err.response.status === 401) {
-          signout(() => {
-            this.props.history.push("/login");
-          });
-        }
-      });
-  };
-
-  loadNomPeriods = async () => {
-    await axios
-      .get(`${process.env.REACT_APP_API_URL}/nomination/period`, {
-        headers: {
-          Authorization: `Bearer ${this.state.token}`,
-        },
-      })
-      .then((res) => {
-        this.setState({
-          nomPeriods: res.data,
-          chosenPeriodId: res.data[0]._id,
-          year: new Date(res.data[0].startDate).getFullYear(),
-          byElection: res.data[0].byElection,
-        });
-      })
-      .catch((err) => {
-        toast.error(`Could not retrieve nomination period data.`);
-      });
-  };
-
-  loadNominees = async () => {
-    const { chosenPeriodId } = this.state;
-
-    await axios
-      .post(`${process.env.REACT_APP_API_URL}/nomination/nominees`, {
-        nominationPeriod: chosenPeriodId,
-      })
-      .then((res) => {
-        this.setState({ nominees: res.data, loaded: true });
-      })
-      .catch((err) => {
-        toast.error(`Could not retrieve nominees data.`);
-      });
-  };
-
-  addCandidate = (nominee) => {
-    let candidate = {
-      user: nominee.user._id,
-      role: nominee.role,
-      election: "",
-      photo: "",
-    };
-    let { candidates } = this.state;
-    candidates.push(candidate);
-    this.setState({ candidates });
-  };
-
-  remCandidate = (candidate) => {
-    let { candidates } = this.state;
-    candidates = candidates.filter((e) => e.user !== candidate.user);
-    this.setState({ candidates });
-  };
-
-  confirmPhoto = (candidate) => {
-    let { candidates } = this.state;
-    candidates.map((c) => {
-      if (c.user === candidate.user) {
-        return delete c.editingPhoto;
-      }
-    });
-    this.setState({ candidates }, () => {
-      console.log(this.state.candidates);
-    });
-  };
-
-  remPhoto = (candidate) => {
-    let { candidates } = this.state;
-    candidates.map((c) => {
-      if (c.user === candidate.user) {
-        c.photo = "";
-        return;
-      }
-    });
-    this.setState({ candidates }, () => {
-      console.log(this.state.candidates);
-    });
-  };
-
-  isCandidateAdded = (id) => {
-    const { candidates } = this.state;
-    let added = false;
-
-    candidates.map((c) => {
-      if (id === c.user) {
-        added = true;
-      }
-    });
-
-    return added;
-  };
-
-  hideElement = (e, element) => {
-    e.preventDefault();
-    let { hideNom, hideCan } = this.state;
-    switch (element) {
-      case "nominees":
-        this.setState({ hideNom: !hideNom });
-        break;
-      case "candidates":
-        this.setState({ hideCan: !hideCan });
-        break;
-      default:
-        return;
-    }
-    console.log(this.state.hideCan);
-  };
-
-  handleChange = (elId, id) => (e) => {
-    let { candidates, startDateTime, startDateDate, endDateTime, endDateDate } =
-      this.state;
-    let startDate, endDate;
-    switch (elId) {
-      case "nomPeriod":
-        this.setState({ chosenPeriodId: e.target.value });
-        break;
-
-      case "canPhoto":
-        candidates.map((c) => {
-          if (c.user === id) {
-            c.photo = e.target.value;
-            c.editingPhoto = true;
-          }
-        });
-        this.setState({ candidates });
-        break;
-
-      case "startDate":
-        startDateDate = new Date(e.target.value).toISOString().split("T")[0];
-        console.log("startDateDate", startDateDate);
-        startDate = new Date(startDateDate);
-        console.log("startDate", startDate);
-        console.log("startDateTime", startDateTime);
-        startDate = new Date(
-          startDate.getTime() + timeToMilliseconds(startDateTime)
-        );
-        console.log("startDate", startDate);
-        this.setState(
-          {
-            startDateDate,
-            startDate: startDate.toISOString(),
-          },
-          () => console.log(this.state.startDate)
-        );
-        break;
-
-      case "startDateTime":
-        console.log("new Date", new Date().getTime());
-        console.log("time", e.target.value);
-        startDate = new Date(startDateDate);
-        startDate = new Date(
-          startDate.getTime() + timeToMilliseconds(e.target.value)
-        );
-        this.setState(
-          {
-            startDateTime: e.target.value,
-            startDate: startDate.toISOString(),
-          },
-          () => console.log(this.state.startDate)
-        );
-        break;
-
-      case "endDate":
-        endDateDate = new Date(e.target.value).toISOString().split("T")[0];
-        endDate = new Date(endDateDate);
-        endDate = new Date(endDate.getTime() + timeToMilliseconds(endDateTime));
-        this.setState(
-          {
-            endDateDate,
-            endDate: endDate.toISOString(),
-          },
-          () => console.log(this.state.endDate)
-        );
-        break;
-
-      case "endDateTime":
-        endDate = new Date(endDateDate);
-        endDate = new Date(
-          endDate.getTime() + timeToMilliseconds(e.target.value)
-        );
-        this.setState(
-          {
-            endDateTime: e.target.value,
-            endDate: endDate.toISOString(),
-          },
-          () => console.log(this.state.endDate)
-        );
-        break;
-
-      default:
-        this.setState({ [elId]: e.target.value });
-        break;
-    }
-  };
-
-  handleSubmit = async (e) => {
-    e.preventDefault();
-    let { candidates, startDate, endDate, byElection } = this.state;
-    const { history } = this.props;
-    let election = {
-      startDate,
-      endDate,
-      byElection,
-    };
-
-    let electionId,
-      cont = false;
-
-    if (isEmpty(candidates)) {
-      return toast.error("An election must have candidates.");
-    } else if (!startDate) {
-      return toast.error("An election must have a start date.");
-    } else if (!endDate) {
-      return toast.error("An election must have an end date.");
-    } else {
-      console.log(candidates);
-      await axios
-        .post(`${process.env.REACT_APP_API_URL}/election`, election, {
-          headers: {
-            Authorization: `Bearer ${this.state.token}`,
-          },
-        })
-        .then((res) => {
-          toast.success(res.data.message);
-          console.log(res.data);
-          electionId = res.data.election._id;
-        })
-        .catch((err) => {
-          toast.error(err.response.data.error);
-          return;
-        });
-
-      await (async () => {
-        candidates.map((c) => {
-          c.election = electionId;
-        });
-        // console.log(candidates);
-        cont = true;
-      })();
-
-      if (cont) {
-        await axios
-          .post(
-            `${process.env.REACT_APP_API_URL}/election/candidates/multiple`,
-            { candidates, election },
-            {
-              headers: {
-                Authorization: `Bearer ${this.state.token}`,
-              },
-            }
-          )
-          .then((res) => {
-            toast.success(res.data.message);
-            console.log(res.data);
-            history.push("/admin/elections");
-          })
-          .catch((err) => {
-            toast.error(err.response.data.error);
-          });
-      }
-    }
-  };
 
   render() {
     const {
@@ -379,6 +93,8 @@ class CreateElection extends Component {
       return "Loading...";
     }
 
+    // console.log(this.state.startDate);
+
     let periods = nomPeriods.map((p, i) => {
       let year = new Date(p.startDate).getFullYear();
       return { _id: p._id, year, byElection: p.byElection };
@@ -400,7 +116,7 @@ class CreateElection extends Component {
               </Link>
               <div className="w-full flex-1 mt-8 text-indigo-500">
                 <NoticeMessage />
-                <AdminNavigation />
+                <AdminNavigation history={history} />
                 <div className="my-12 border-b text-center">
                   <div className="leading-none px-2 inline-block text-sm text-gray-600 tracking-wide font-medium bg-white transform translate-y-1/2">
                     Create an Election
@@ -819,6 +535,303 @@ class CreateElection extends Component {
       </div>
     );
   }
+
+  loadProfile = async () => {
+    await axios
+      .get(`${process.env.REACT_APP_API_URL}/user/${isAuth()._id}`, {
+        headers: {
+          Authorization: `Bearer ${this.state.token}`,
+        },
+      })
+      .then((res) => {
+        const { role, first_name, last_name, pref_first_name, student_number } =
+          res.data;
+        this.setState({
+          role,
+        });
+      })
+      .catch((err) => {
+        toast.error(`Error To Your Information ${err.response.statusText}`);
+        if (err.response.status === 401) {
+          signout(() => {
+            this.props.history.push("/login");
+          });
+        }
+      });
+  };
+
+  loadNomPeriods = async () => {
+    await axios
+      .get(`${process.env.REACT_APP_API_URL}/nomination/period`, {
+        headers: {
+          Authorization: `Bearer ${this.state.token}`,
+        },
+      })
+      .then((res) => {
+        this.setState({
+          nomPeriods: res.data,
+          chosenPeriodId: res.data[0]._id,
+          year: new Date(res.data[0].startDate).getFullYear(),
+          byElection: res.data[0].byElection,
+        });
+        console.log(res.data);
+      })
+      .catch((err) => {
+        toast.error(`Could not retrieve nomination period data.`);
+      });
+  };
+
+  loadNominees = async () => {
+    const { chosenPeriodId } = this.state;
+
+    await axios
+      .post(`${process.env.REACT_APP_API_URL}/nomination/nominees`, {
+        nominationPeriod: chosenPeriodId,
+      })
+      .then((res) => {
+        this.setState({ nominees: res.data, loaded: true });
+        console.log(res.data);
+      })
+      .catch((err) => {
+        toast.error(`Could not retrieve nominees data.`);
+      });
+  };
+
+  addCandidate = (nominee) => {
+    let candidate = {
+      user: nominee.user._id,
+      role: nominee.role,
+      election: "",
+      photo: "",
+    };
+    let { candidates } = this.state;
+    candidates.push(candidate);
+    this.setState({ candidates });
+  };
+
+  remCandidate = (candidate) => {
+    let { candidates } = this.state;
+    candidates = candidates.filter((e) => e.user !== candidate.user);
+    this.setState({ candidates });
+  };
+
+  confirmPhoto = (candidate) => {
+    let { candidates } = this.state;
+    candidates.map((c) => {
+      if (c.user === candidate.user) {
+        return delete c.editingPhoto;
+      }
+    });
+    this.setState({ candidates }, () => {
+      console.log(this.state.candidates);
+    });
+  };
+
+  remPhoto = (candidate) => {
+    let { candidates } = this.state;
+    candidates.map((c) => {
+      if (c.user === candidate.user) {
+        c.photo = "";
+        return;
+      }
+    });
+    this.setState({ candidates }, () => {
+      console.log(this.state.candidates);
+    });
+  };
+
+  isCandidateAdded = (id) => {
+    const { candidates } = this.state;
+    let added = false;
+
+    candidates.map((c) => {
+      if (id === c.user) {
+        added = true;
+      }
+    });
+
+    return added;
+  };
+
+  hideElement = (e, element) => {
+    e.preventDefault();
+    let { hideNom, hideCan } = this.state;
+    switch (element) {
+      case "nominees":
+        this.setState({ hideNom: !hideNom });
+        break;
+      case "candidates":
+        this.setState({ hideCan: !hideCan });
+        break;
+      default:
+        return;
+    }
+    console.log(this.state.hideCan);
+  };
+
+  dateIsValid = (date) => !Number.isNaN(new Date(date).getTime());
+
+  handleChange = (elId, id) => (e) => {
+    let { candidates, startDateTime, startDateDate, endDateTime, endDateDate } =
+      this.state;
+    let startDate, endDate;
+    switch (elId) {
+      case "nomPeriod":
+        this.setState({ chosenPeriodId: e.target.value });
+        break;
+
+      case "canPhoto":
+        candidates.map((c) => {
+          if (c.user === id) {
+            c.photo = e.target.value;
+            c.editingPhoto = true;
+          }
+        });
+        this.setState({ candidates });
+        break;
+
+      case "startDate":
+        if (!this.dateIsValid(e.target.value)) {
+          return console.log(e.target.value);
+        }
+        startDateDate = new Date(e.target.value).toISOString().split("T")[0];
+        // console.log("startDateDate", startDateDate);
+        startDate = new Date(startDateDate);
+        // console.log("startDate", startDate);
+        // console.log("startDateTime", startDateTime);
+        startDate = new Date(
+          startDate.getTime() + timeToMilliseconds(startDateTime)
+        );
+        // console.log("startDate", startDate);
+        this.setState(
+          {
+            startDateDate,
+            startDate: startDate.toISOString(),
+          },
+          () => console.log("startDate changed:", this.state.startDate)
+        );
+        break;
+
+      case "startDateTime":
+        // console.log("new Date", new Date().getTime());
+        // console.log("time", e.target.value);
+        startDate = new Date(startDateDate);
+        startDate = new Date(
+          startDate.getTime() + timeToMilliseconds(e.target.value)
+        );
+        this.setState(
+          {
+            startDateTime: e.target.value,
+            startDate: startDate.toISOString(),
+          },
+          () => console.log("startDate changed:", this.state.startDate)
+        );
+        break;
+
+      case "endDate":
+        if (!this.dateIsValid(e.target.value)) {
+          return console.log(e.target.value);
+        }
+        endDateDate = new Date(e.target.value).toISOString().split("T")[0];
+        endDate = new Date(endDateDate);
+        endDate = new Date(endDate.getTime() + timeToMilliseconds(endDateTime));
+        this.setState(
+          {
+            endDateDate,
+            endDate: endDate.toISOString(),
+          },
+          () => console.log("endDate changed:", this.state.endDate)
+        );
+        break;
+
+      case "endDateTime":
+        endDate = new Date(endDateDate);
+        endDate = new Date(
+          endDate.getTime() + timeToMilliseconds(e.target.value)
+        );
+        this.setState(
+          {
+            endDateTime: e.target.value,
+            endDate: endDate.toISOString(),
+          },
+          () => console.log("endDate changed:", this.state.endDate)
+        );
+        break;
+
+      default:
+        this.setState({ [elId]: e.target.value });
+        break;
+    }
+  };
+
+  handleSubmit = async (e) => {
+    e.preventDefault();
+    let { candidates, startDate, endDate, byElection } = this.state;
+    const { history } = this.props;
+    let election = {
+      startDate,
+      endDate,
+      byElection,
+    };
+    console.log(election);
+
+    let electionId,
+      cont = false;
+
+    if (isEmpty(candidates)) {
+      return toast.error("An election must have candidates.");
+    } else if (!startDate) {
+      return toast.error("An election must have a start date.");
+    } else if (!endDate) {
+      return toast.error("An election must have an end date.");
+    } else {
+      console.log(candidates);
+      await axios
+        .post(`${process.env.REACT_APP_API_URL}/election`, election, {
+          headers: {
+            Authorization: `Bearer ${this.state.token}`,
+          },
+        })
+        .then((res) => {
+          toast.success(res.data.message);
+          console.log(res.data);
+          electionId = res.data.election._id;
+        })
+        .catch((err) => {
+          toast.error(err.response.data.error);
+          return;
+        });
+
+      await (async () => {
+        candidates.map((c) => {
+          c.election = electionId;
+        });
+        // console.log(candidates);
+        cont = true;
+      })();
+
+      if (cont) {
+        await axios
+          .post(
+            `${process.env.REACT_APP_API_URL}/election/candidates/multiple`,
+            { candidates, election },
+            {
+              headers: {
+                Authorization: `Bearer ${this.state.token}`,
+              },
+            }
+          )
+          .then((res) => {
+            toast.success(res.data.message);
+            console.log(res.data);
+            history.push("/admin/elections");
+          })
+          .catch((err) => {
+            toast.error(err.response.data.error);
+          });
+      }
+    }
+  };
 }
 
 export default CreateElection;

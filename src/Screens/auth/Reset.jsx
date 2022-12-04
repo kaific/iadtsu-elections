@@ -33,8 +33,8 @@ const Reset = ({ match, history }) => {
         })
         .then((res) => {
           setFormData({ ...formData, password1: "", password2: "" });
-          toast.success(res.data.message);
           history.push("/login");
+          toast.success(res.data.message);
         })
         .catch((err) => {
           toast.error(`${err.response.data.error}`);
