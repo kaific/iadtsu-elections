@@ -110,8 +110,8 @@ class Elections extends Component {
 
     let currentTime = new Date().getTime();
     // let currentTime = new Date(election.startDate).getTime();
-    let electionTime = new Date(Date.now()).getTime();
-    // let electionTime = new Date(election.startDate).getTime();
+    // let electionTime = new Date(Date.now()).getTime();
+    let electionTime = new Date(election.startDate).getTime();
     let electionEnd = new Date(election.endDate).getTime();
     let electionOpen = currentTime >= electionTime && currentTime < electionEnd;
 
