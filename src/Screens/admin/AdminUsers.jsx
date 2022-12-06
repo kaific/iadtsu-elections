@@ -149,7 +149,7 @@ class AdminUsers extends Component {
                                   </td>
                                   <td className="border text-center justify-center px-2 py-1 w-12">
                                     <a
-                                      href={`http://localhost:3000/users/activate/${u.activationToken}`}
+                                      href={`https://iadtsu-elections.web.app/users/activate/${u.activationToken}`}
                                       className="button my-2 tracking-wide font-semibold bg-purple-600 text-gray-100 py-1 rounded-sm hover:bg-purple-800 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none"
                                       target="_blank"
                                     >
