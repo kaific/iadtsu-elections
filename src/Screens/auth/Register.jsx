@@ -181,7 +181,8 @@ const Register = ({ history }) => {
                   value={password2}
                 />
                 <div className="w-full px-8 py-4 font-medium text-sm mt-5">
-                  An activation link will be sent to your student email.
+                  An activation link will be sent to your student email.&nbsp;
+                  <strong>Make sure your student number is correct.</strong>
                 </div>
                 <button
                   type="submit"
