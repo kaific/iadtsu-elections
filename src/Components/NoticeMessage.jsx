@@ -19,7 +19,7 @@ const NoticeMessage = function (props) {
         <strong>Tuesday, 6th December 09:00</strong>. Please register before
         then. <br />
         <br />
-        If you registered before 5th December 2022 have to{" "}
+        If you registered before 5th December 2022, you have to{" "}
         <strong>register again</strong>.
       </div>
     </>

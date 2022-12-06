@@ -140,7 +140,7 @@ class AdminUsers extends Component {
                                   <td className="border text-left px-2 py-1">
                                     {u.pref_first_name}{" "}
                                     {u.pref_first_name !== u.first_name
-                                      ? `(${first_name}) `
+                                      ? `(${u.first_name}) `
                                       : ""}
                                     {u.last_name}
                                   </td>

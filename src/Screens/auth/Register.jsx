@@ -17,6 +17,10 @@ const Register = ({ history }) => {
     password2: "",
   });
 
+  const [registerState, setRegister] = useState({
+    registered: false,
+  });
+
   const {
     student_number,
     first_name,
@@ -25,6 +29,8 @@ const Register = ({ history }) => {
     password1,
     password2,
   } = formData;
+
+  const { registered } = registerState;
 
   // Handle change from inputs
   const handleChange = (text) => (e) => {
@@ -67,10 +73,13 @@ const Register = ({ history }) => {
               password2: "",
             });
 
-            toast.success(res.data.message);
+            setRegister({
+              registered: true,
+            });
           })
           .catch((err) => {
             toast.error(err.response.data.error);
+            console.log(err.response.data.error);
           });
       } else {
         toast.error("Passwords must match");
@@ -79,6 +88,36 @@ const Register = ({ history }) => {
       toast.error("Please fill all required fields");
     }
   };
+
+  if (registered) {
+    return (
+      <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
+        {isAuth() ? <Redirect to="/" /> : null}
+        <ToastContainer />
+        <div className="max-w-screen-xl m-0 sm:m-20 bg-white shadow sm:rounded-lg flex justify-center flex-1">
+          <div className="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
+            <div className="mt-4 flex flex-col items-center">
+              <Link to="/" className="text-xl xl:text-xl text-center ">
+                {"<"} Home
+              </Link>
+              <div className="mx-auto max-w-xs relative text-center text-blue-700 mt-6">
+                <p>Thank you for registering!</p>
+                <p className="pt-6">
+                  Check your student email for a link to activate your account.
+                  Please check your&nbsp;<strong>Junk Mail</strong>&nbsp;folder.
+                </p>
+                <p className="pt-6 text-red-700">
+                  If you do not receive it after 5 minutes, please email&nbsp;
+                  <strong>help.iadtsu@gmail.com</strong>&nbsp;from your student
+                  account.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 text-gray-900 flex justify-center">
