@@ -15,8 +15,8 @@ const NoticeMessage = function (props) {
         If you encounter any issues with the system, please email{" "}
         <strong>help.iadtsu@gmail.com</strong>.<br />
         <br />
-        Voting for By-Elections 2022 will open on{" "}
-        <strong>Tuesday, 6th December 09:00</strong>. Please register before
+        Voting for By-Elections 2022 will end{" "}
+        <strong>Wednesday, 7th December 18:00</strong>. Please cast your votes before
         then. <br />
         <br />
         If you registered before 5th December 2022, you have to{" "}
