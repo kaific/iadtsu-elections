@@ -1,70 +1,35 @@
-# Getting Started with Create React App
+# Introduction
+ 
+A React.js frontend application for an online voting system used by IADT Students' Union's for official officer elections.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+RESTful API backend server can be found in a separate repository [here](https://github.com/kaific/iadtsu-elections-server).
 
-## Available Scripts
+## Languages & Libraries
+JavaScript, [Node.js](https://nodejs.org/), [React.js](https://www.npmjs.com/package/react), [Axios](https://www.npmjs.com/package/axios), [JSONWebToken (JWT)](https://www.npmjs.com/package/jsonwebtoken)
 
-In the project directory, you can run:
+## Background
+A project originally put together out of necessity ahead of the 2021 IADTSU by-elections. Following a hasty implementation and initial launch, the backend and frontend went through small improvements based on user feedback.
 
-### `npm start`
+The system facilitated 4 separate elections over a period of 2 years.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+In years prior, the student body's votes were cast at in-person stations using paper ballots and student ID verification. The need for this application arose due to the second state-wide lockdown during the COVID-19 outbreak in Ireland. The students' union's officer elections were to occur within a fast-approaching timeframe specified by its constitution.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+In lieu of a suitable, internal alternative, time constraints and a limited budget, a web application was developed as a side project by the Vice President for Welfare & Equality at the time (the owner of this repository).
 
-### `npm test`
+# Setup
+[Node.js](https://nodejs.org) v18 or higher is recommended to run this app.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+From the root `/` directory:
+  1. Using a chosen CLI, install the necessary packages:
+     ```console
+     npm install
+     ```
+  2. Run the app in development mode:
+     ```console
+     npm start
+     ```
+  3. The app should be served to [http://localhost:3000](http://localhost:3000)
+  4. To build the app for production to the `/build` directory:
+     ```console
+     npm run build
+     ```
