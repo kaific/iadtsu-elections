@@ -8,7 +8,6 @@ import Navigation from "../../Components/Navigation";
 
 import { isAuth, getCookie, signout } from "../../helpers/auth";
 import { isEmpty } from "../../helpers/basic";
-import { sign } from "jsonwebtoken";
 
 // const Nominations = ({ history }) => {
 class Nominations extends Component {
@@ -107,13 +106,8 @@ class Nominations extends Component {
         },
       })
       .then((res) => {
-        const {
-          role,
-          first_name,
-          last_name,
-          pref_first_name,
-          student_number,
-        } = res.data;
+        const { role, first_name, last_name, pref_first_name, student_number } =
+          res.data;
         this.setState({
           role,
           first_name,

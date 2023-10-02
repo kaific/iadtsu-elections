@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import axios from "axios";
-import jwt from "jsonwebtoken";
+import jwt_decode from "jwt-decode";
 
 import authSvg from "../../assets/welcome.svg";
 import { authenticate, isAuth } from "../../helpers/auth";
@@ -23,7 +23,7 @@ const Activate = ({ match }) => {
       then decode token and get name
     */
     let token = match.params.token;
-    let user = jwt.decode(token);
+    let user = jwt_decode(token);
 
     if (token) {
       setFormData({ ...formData, user, token });
